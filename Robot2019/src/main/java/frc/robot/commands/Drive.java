@@ -29,7 +29,11 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      RobotMap.drive.arcadeDrive(OI.stick.getRawAxis(1), OI.stick.getRawAxis(4));
+    double yVal=OI.stick.getRawAxis(1);
+    double xVal=OI.stick.getRawAxis(4);
+    if(yVal<-.1||yVal>.1||xVal<-.1||xVal>.1){
+        RobotMap.drive.arcadeDrive(OI.stick.getRawAxis(1), OI.stick.getRawAxis(4));
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
