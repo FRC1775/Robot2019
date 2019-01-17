@@ -25,7 +25,7 @@ import frc.robot.subsystems.MotorSubsystem;
  */
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
-  public static MotorSubsystem motorSubsystem = new MotorSubsystem();
+  public static MotorSubsystem motorSubsystem;
   public static OI m_oi;
 
   Command m_autonomousCommand; // Hello  
@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
+    motorSubsystem = new MotorSubsystem();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
