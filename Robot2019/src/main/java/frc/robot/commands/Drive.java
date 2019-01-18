@@ -16,7 +16,9 @@ import frc.robot.OI;
  * An example command.  You can replace me with your own command.
  */
 public class Drive extends Command {
-  private final static long RAMP_TIME = 400; 
+  private final static long RAMP_TIME = 10000; 
+  long startTime;
+  long rampFactor;
   public Drive() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.motorSubsystem);
@@ -33,21 +35,29 @@ public class Drive extends Command {
 
     double yVal=OI.stick.getRawAxis(1);
     double xVal=OI.stick.getRawAxis(4);
-    double moveValue = yVal; 
-    double turnValue = xVal * moveValue;
-    long startTime; 
- 
+    double moveValue = -yVal; 
+    double turnValue = xVal;
+    
 
-
-    if(yVal<-.1||yVal>.1||xVal<-.1||xVal>.1){
-      startTime = System.currentTimeMillis();
-      long rampFactor = Math.min( 1, ((System.currentTimeMillis() - startTime) / RAMP_TIME));
-      moveValue = moveValue * rampFactor;
-        RobotMap.drive.arcadeDrive(moveValue, turnValue);
-    } else {
-      startTime = 0;
+    if(yVal < -0.1 || yVal > 0.1){
+      turnValue = moveValue * xVal;
+    
+    }else{
+    
+      if(xVal < 0.1 && xVal > -0.1 ){
+        startTime = System.currentTimeMillis();
+        rampFactor = 0;
+    
+      }
+    
+      rampFactor = Math.min(1, (System.currentTimeMillis() - startTime) / RAMP_TIME);
+      turnValue = rampFactor * xVal;
+      moveValue = 0;
     }
+      RobotMap.drive.arcadeDrive(moveValue, turnValue);
+     
   }
+ 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
