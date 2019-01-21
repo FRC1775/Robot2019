@@ -7,7 +7,14 @@
 
 package frc.robot;
 
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.cscore.CvSink;
 import  edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -28,10 +35,14 @@ public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
   public static UsbCamera driverCamera;
+public static VisionPipeline pipeline; 
 
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  //we made these but they have no source. they should store image data 
+  Mat imageSource = new Mat(); 
+  Mat hslThresholdOutput = new Mat();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -41,9 +52,25 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+  
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    initCamera();
+    initCamera(); 
+    pipeline = new VisionPipeline(){
+    //we're trying to mask our camera feed
+      @Override
+      public void process(Mat image) {
+        Mat hslThresholdInput = image;
+        double[] hslThresholdHue = {70, 85};
+        double[] hslThresholdSaturation = {100, 255};
+        double[] hslThresholdLuminance = {40, 200};
+        //converts from RBG  to HSL
+        Imgproc.cvtColor(hslThresholdInput, hslThresholdOutput, Imgproc.COLOR_BGR2HLS); 
+        //compares the HSL values to a predetermined range (not actual values)
+        Core.inRange(hslThresholdOutput, new Scalar(hslThresholdHue[0], hslThresholdSaturation[0], hslThresholdLuminance[0]), 
+          new Scalar ( hslThresholdHue[1], hslThresholdSaturation[1], hslThresholdLuminance[1]), hslThresholdOutput);
+      }
+    };
   }
 
   /**
@@ -57,6 +84,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putBoolean("driver connected", driverCamera.isConnected());
+    CvSink cvSink = CameraServer.getInstance().getVideo(driverCamera);
+    pipeline.process(imageSource);
+//we want to the modified image onto the smart dashboard    
   }
 
   /**
