@@ -33,8 +33,8 @@ public final class MapData extends ComplexDataType<Point2D> {
   @Override
   public Function<Map<String, Object>, Point2D> fromMap() {
     return map -> new Point2D(
-        (double)Maps.getOrDefault(map, "x", (Object)0),
-        (double)Maps.getOrDefault(map, "y", 0)
+        Maps.getOrDefault(map, "x", 0),
+        Maps.getOrDefault(map, "y", 0)
     );
   }
 

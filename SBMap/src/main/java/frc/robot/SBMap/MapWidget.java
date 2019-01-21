@@ -4,7 +4,7 @@ import edu.wpi.first.shuffleboard.api.widget.Description;
 import edu.wpi.first.shuffleboard.api.widget.ParametrizedController;
 import edu.wpi.first.shuffleboard.api.widget.SimpleAnnotatedWidget;
 
-import frc.robot.SBMap.Point2D;;
+import frc.robot.SBMap.Point2D;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
