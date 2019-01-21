@@ -58,6 +58,7 @@ public static VisionPipeline pipeline;
     initCamera(); 
     pipeline = new VisionPipeline(){
     //we're trying to mask our camera feed
+    // we need this: https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio
       @Override
       public void process(Mat image) {
         Mat hslThresholdInput = image;
