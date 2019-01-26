@@ -16,11 +16,8 @@ import org.opencv.imgproc.Imgproc;
 import edu.wpi.cscore.CvSink;
 import  edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionPipeline;
-// deprecated VisionThread
-import edu.wpi.first.wpilibj.vision.VisionThread;
-
-// not deprecated vision thread but we don't know the methods
-// edu.wpi.first.vision.VisionThread
+import edu.wpi.first.vision.VisionRunner;
+import edu.wpi.first.vision.VisionThread;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -43,7 +40,7 @@ public class Robot extends TimedRobot {
   public static UsbCamera driverCamera;
   private VisionThread visionThread;
 	private double centerX = 0.0;	
-	private final Object imgLock = new Object();
+  private final Object imgLock = new Object();
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -63,8 +60,7 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
     initCamera(); 
-    // this is the deprecated method, but it's the one the website says to use
-    // we can look up the better one on WPI under the other import :)
+
     visionThread = new VisionThread(driverCamera, new GripPipeline(), pipeline -> {
       if (!pipeline.findContoursOutput().isEmpty()) {
           Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
