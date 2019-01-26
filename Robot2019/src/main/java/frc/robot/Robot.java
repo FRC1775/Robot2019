@@ -9,12 +9,18 @@ package frc.robot;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.CvSink;
 import  edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionPipeline;
+// deprecated VisionThread
+import edu.wpi.first.wpilibj.vision.VisionThread;
+
+// not deprecated vision thread but we don't know the methods
+// edu.wpi.first.vision.VisionThread
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -35,8 +41,9 @@ public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
   public static UsbCamera driverCamera;
-public static VisionPipeline pipeline; 
-
+  private VisionThread visionThread;
+	private double centerX = 0.0;	
+	private final Object imgLock = new Object();
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -56,22 +63,17 @@ public static VisionPipeline pipeline;
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
     initCamera(); 
-    pipeline = new VisionPipeline(){
-    //we're trying to mask our camera feed
-    // we need this: https://wpilib.screenstepslive.com/s/currentCS/m/vision/l/669166-using-the-cameraserver-on-the-roborio
-      @Override
-      public void process(Mat image) {
-        Mat hslThresholdInput = image;
-        double[] hslThresholdHue = {70, 85};
-        double[] hslThresholdSaturation = {100, 255};
-        double[] hslThresholdLuminance = {40, 200};
-        //converts from RBG  to HSL
-        Imgproc.cvtColor(hslThresholdInput, hslThresholdOutput, Imgproc.COLOR_BGR2HLS); 
-        //compares the HSL values to a predetermined range (not actual values)
-        Core.inRange(hslThresholdOutput, new Scalar(hslThresholdHue[0], hslThresholdSaturation[0], hslThresholdLuminance[0]), 
-          new Scalar ( hslThresholdHue[1], hslThresholdSaturation[1], hslThresholdLuminance[1]), hslThresholdOutput);
+    // this is the deprecated method, but it's the one the website says to use
+    // we can look up the better one on WPI under the other import :)
+    visionThread = new VisionThread(driverCamera, new GripPipeline(), pipeline -> {
+      if (!pipeline.findContoursOutput().isEmpty()) {
+          Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
+          synchronized (imgLock) {
+            centerX = r.x + (r.width / 2);
+        }
       }
-    };
+  });
+  visionThread.start();
   }
 
   /**
@@ -86,7 +88,6 @@ public static VisionPipeline pipeline;
   public void robotPeriodic() {
     SmartDashboard.putBoolean("driver connected", driverCamera.isConnected());
     CvSink cvSink = CameraServer.getInstance().getVideo(driverCamera);
-    pipeline.process(imageSource);
 //we want to the modified image onto the smart dashboard    
   }
 
