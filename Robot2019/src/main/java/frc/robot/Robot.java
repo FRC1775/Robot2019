@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
     initCamera(); 
 
-    visionThread = new VisionThread(driverCamera, new GripPipeline(), pipeline -> {
+    visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), pipeline -> {
       if (!pipeline.findContoursOutput().isEmpty()) {
           Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
           synchronized (imgLock) {
@@ -169,6 +169,7 @@ public class Robot extends TimedRobot {
     //driverCamera.setResolution(320, 180);
     driverCamera.setFPS(30);
     //driverCamera.getProperty("focus_auto").set(1);
+    driverCamera.setExposureManual(0);
     
   }
 }
