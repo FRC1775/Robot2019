@@ -61,17 +61,27 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
     initCamera(); 
 
-    visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), pipeline -> {
-      if (!pipeline.findContoursOutput().isEmpty()) {
-          Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
-          synchronized (imgLock) {
-            centerX = r.x + (r.width / 2);
-        }
+    visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
+  
+  /*visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), pipeline -> {
+    if (!pipeline.findContoursOutput().isEmpty()) {
+        Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
+        synchronized (imgLock) {
+          centerX = r.x + (r.width / 2);
       }
+    }
   });
-  visionThread.start();
+  */visionThread.start();
   }
-
+  private void testFunction (WalkOfShamePipeline pipeline){
+    if (!pipeline.findContoursOutput().isEmpty()) {
+      Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
+      synchronized (imgLock) {
+        centerX = r.x + (r.width / 2);
+    }
+    System.out.println(centerX);
+  }
+  }
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
