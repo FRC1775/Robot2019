@@ -14,6 +14,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 import  edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionRunner;
@@ -59,17 +60,24 @@ public class Robot extends TimedRobot {
   
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    initCamera(); 
+   // initCamera(); 
 
-    visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), pipeline -> {
-      if (!pipeline.findContoursOutput().isEmpty()) {
-          Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
-          synchronized (imgLock) {
-            centerX = r.x + (r.width / 2);
-        }
-      }
-  });
-  visionThread.start();
+    Thread thread = new Thread(() -> {
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setResolution(640, 480);
+      CvSink cvSink = CameraServer.getInstance().getVideo();
+        CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 640, 480);
+        
+        Mat source = new Mat();
+        Mat output = new Mat();
+        
+        while(!Thread.interrupted()) {
+            cvSink.grabFrame(source);
+            Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+            outputStream.putFrame(output);
+  }
+});
+  thread.start();
   }
 
   /**
@@ -82,9 +90,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putBoolean("driver connected", driverCamera.isConnected());
-    CvSink cvSink = CameraServer.getInstance().getVideo(driverCamera);
-//we want to the modified image onto the smart dashboard    
+   
+//we want to get the modified image onto the smart dashboard    
   }
 
   /**
@@ -164,12 +171,12 @@ public class Robot extends TimedRobot {
   }
 
 
-  private void initCamera() {
+ /* private void initCamera() {
     driverCamera = CameraServer.getInstance().startAutomaticCapture();
     //driverCamera.setResolution(320, 180);
     driverCamera.setFPS(30);
     //driverCamera.getProperty("focus_auto").set(1);
     driverCamera.setExposureManual(0);
     
-  }
+  }*/
 }
