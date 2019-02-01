@@ -39,7 +39,12 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   public static UsbCamera driverCamera;
   private VisionThread visionThread;
-	private double centerX = 0.0;	
+  private double perimeter = 0.0;	
+  private double area = 0.0;
+  private double valuex = 0.0;
+  private double valuey = 0.0;
+  private double midx = 0.0;
+  private double midy = 0.0;
   private final Object imgLock = new Object();
 
   Command m_autonomousCommand;
@@ -63,23 +68,23 @@ public class Robot extends TimedRobot {
 
     visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
   
-  /*visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), pipeline -> {
-    if (!pipeline.findContoursOutput().isEmpty()) {
-        Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
-        synchronized (imgLock) {
-          centerX = r.x + (r.width / 2);
-      }
-    }
-  });
-  */visionThread.start();
+    visionThread.start();
   }
   private void testFunction (WalkOfShamePipeline pipeline){
     if (!pipeline.findContoursOutput().isEmpty()) {
       Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
       synchronized (imgLock) {
-        centerX = r.x + (r.width / 2);
-    }
-    System.out.println(centerX);
+        perimeter = 2 * r.width + 2 * r.height;
+        area = r.width * r.height;
+        midx = r.x + r.width / 2;
+        midy = r.y + r.height / 2;
+        valuex = (midx - 360 / 2) / (360 / 2);
+        valuey = (midy - 180 / 2) / (180 / 2);
+     }
+    System.out.println("perimeter: " + perimeter);
+    System.out.println("area: " + area);
+    System.out.println("X: " + valuex);
+    System.out.println("Y: " + valuey);
   }
   }
   /**
@@ -176,7 +181,7 @@ public class Robot extends TimedRobot {
 
   private void initCamera() {
     driverCamera = CameraServer.getInstance().startAutomaticCapture();
-    //driverCamera.setResolution(320, 180);
+    driverCamera.setResolution(320, 180);
     driverCamera.setFPS(30);
     //driverCamera.getProperty("focus_auto").set(1);
     driverCamera.setExposureManual(0);

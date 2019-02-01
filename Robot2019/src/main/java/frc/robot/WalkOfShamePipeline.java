@@ -44,11 +44,13 @@ public class WalkOfShamePipeline implements VisionPipeline {
 	 */
 	@Override	public void process(Mat source0) {
 		// Step Resize_Image0:
+	
 		Mat resizeImageInput = source0;
-		double resizeImageWidth = 640.0;
-		double resizeImageHeight = 480.0;
+		double resizeImageWidth = 360.0;
+		double resizeImageHeight = 180.0;
 		int resizeImageInterpolation = Imgproc.INTER_CUBIC;
 		resizeImage(resizeImageInput, resizeImageWidth, resizeImageHeight, resizeImageInterpolation, resizeImageOutput);
+	
 
 		// Step Blur0:
 		Mat blurInput = resizeImageOutput;
@@ -88,9 +90,10 @@ public class WalkOfShamePipeline implements VisionPipeline {
 	 * This method is a generated getter for the output of a Resize_Image.
 	 * @return Mat output from Resize_Image.
 	 */
-	public Mat resizeImageOutput() {
+	 public Mat resizeImageOutput() {
 		return resizeImageOutput;
 	}
+	
 
 	/**
 	 * This method is a generated getter for the output of a Blur.
@@ -141,7 +144,8 @@ public class WalkOfShamePipeline implements VisionPipeline {
 	 * @param interpolation The type of interpolation.
 	 * @param output The image in which to store the output.
 	 */
-	private void resizeImage(Mat input, double width, double height,
+	
+	 private void resizeImage(Mat input, double width, double height,
 		int interpolation, Mat output) {
 		Imgproc.resize(input, output, new Size(width, height), 0.0, 0.0, interpolation);
 	}
