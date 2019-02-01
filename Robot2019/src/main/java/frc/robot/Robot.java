@@ -12,10 +12,16 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+
+
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.IterativeRobot;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
-import  edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionRunner;
 import edu.wpi.first.vision.VisionThread;
@@ -62,7 +68,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
    // initCamera(); 
 
-    Thread thread = new Thread(() -> {
+    new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
       camera.setResolution(640, 480);
       CvSink cvSink = CameraServer.getInstance().getVideo();
@@ -73,11 +79,15 @@ public class Robot extends TimedRobot {
         
         while(!Thread.interrupted()) {
             cvSink.grabFrame(source);
+            System.out.println("huh " + source);
             Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
             outputStream.putFrame(output);
-  }
-});
-  thread.start();
+            
+
+   }
+  
+}).start();
+
   }
 
   /**
