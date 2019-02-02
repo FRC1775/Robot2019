@@ -12,8 +12,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 
 
@@ -51,9 +49,7 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  //we made these but they have no source. they should store image data 
-  Mat imageSource = new Mat(); 
-  Mat hslThresholdOutput = new Mat();
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -72,15 +68,21 @@ public class Robot extends TimedRobot {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
       camera.setResolution(640, 480);
       CvSink cvSink = CameraServer.getInstance().getVideo();
-        CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 640, 480);
+      CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 640, 480);
         
         Mat source = new Mat();
         Mat output = new Mat();
         
+        
+
+        if(source.empty()){
+          System.out.println( "she empty" );
+        }
+
         while(!Thread.interrupted()) {
             cvSink.grabFrame(source);
             System.out.println("huh " + source);
-            Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY); 
             outputStream.putFrame(output);
             
 
