@@ -100,8 +100,13 @@ public class Robot extends TimedRobot {
     //  System.out.println("area: " + area);
     //  System.out.println("X: " + valuex);
     //  System.out.println("Y: " + valuey);
-    System.out.println( distance );
+    System.out.println( "distance: " + distance );
+    System.out.println("width: " + r.width);
+    System.out.println("height: " + r.height);
+  }else{
+    System.out.println("findContoursOutput is empty :(");
   }
+
   }
   /**
    * This function is called every robot packet, no matter the mode. Use
