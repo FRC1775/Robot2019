@@ -80,6 +80,8 @@ public class Robot extends TimedRobot {
   }
   //Horizontal - 61
   //Vertical - 34.3
+
+  // look into what the bounding box actually looks like / what the width is for an angled rectangle
   private void testFunction (WalkOfShamePipeline pipeline){
     if (!pipeline.findContoursOutput().isEmpty()) {
       Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
@@ -90,6 +92,7 @@ public class Robot extends TimedRobot {
         midy = r.y + r.height / 2;
         valuex = (midx - 320 / 2) / (320 / 2);
         valuey = (midy - 180 / 2) / (180 / 2);
+        // we need to be taking the smaller of the length or width in order to use this correctly
         fieldOfView = FISH_RESOLUTION / r.width; 
         distance = ( fieldOfView / ( 2 * Math.tan(0.4426) ) );
      }
