@@ -9,7 +9,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 
+import edu.wpi.cscore.CvSource;
 import edu.wpi.first.vision.VisionPipeline;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.cameraserver.CameraServer;
 
 import org.opencv.core.*;
 import org.opencv.core.Core.*;
@@ -78,6 +81,8 @@ public class WalkOfShamePipeline implements VisionPipeline {
 		Mat maskInput = resizeImageOutput;
 		Mat maskMask = cvErodeOutput;
 		mask(maskInput, maskMask, maskOutput);
+		//CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 320, 180);
+		//outputStream.putFrame(maskOutput);
 
 		// Step Find_Contours0:
 		Mat findContoursInput = cvErodeOutput;
