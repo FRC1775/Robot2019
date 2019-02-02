@@ -27,6 +27,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 
+
+
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -35,6 +38,8 @@ import frc.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+  private final double RESOLUTION_WIDTH = 320;
+  private final double FISH_RESOLUTION = RESOLUTION_WIDTH * 2; 
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
   public static UsbCamera driverCamera;
@@ -46,6 +51,9 @@ public class Robot extends TimedRobot {
   private double midx = 0.0;
   private double midy = 0.0;
   private final Object imgLock = new Object();
+  private double fieldOfView = 0;
+  private double distance = 0; 
+
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -70,6 +78,8 @@ public class Robot extends TimedRobot {
   
     visionThread.start();
   }
+  //Horizontal - 61
+  //Vertical - 34.3
   private void testFunction (WalkOfShamePipeline pipeline){
     if (!pipeline.findContoursOutput().isEmpty()) {
       Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
@@ -78,13 +88,16 @@ public class Robot extends TimedRobot {
         area = r.width * r.height;
         midx = r.x + r.width / 2;
         midy = r.y + r.height / 2;
-        valuex = (midx - 360 / 2) / (360 / 2);
+        valuex = (midx - 320 / 2) / (320 / 2);
         valuey = (midy - 180 / 2) / (180 / 2);
+        fieldOfView = FISH_RESOLUTION / r.width; 
+        distance = ( fieldOfView / ( 2 * Math.tan(0.4426) ) );
      }
-    System.out.println("perimeter: " + perimeter);
-    System.out.println("area: " + area);
-    System.out.println("X: " + valuex);
-    System.out.println("Y: " + valuey);
+    //  System.out.println("perimeter: " + perimeter);
+    //  System.out.println("area: " + area);
+    //  System.out.println("X: " + valuex);
+    //  System.out.println("Y: " + valuey);
+    System.out.println( distance );
   }
   }
   /**

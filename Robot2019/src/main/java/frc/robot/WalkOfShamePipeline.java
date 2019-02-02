@@ -46,7 +46,7 @@ public class WalkOfShamePipeline implements VisionPipeline {
 		// Step Resize_Image0:
 	
 		Mat resizeImageInput = source0;
-		double resizeImageWidth = 360.0;
+		double resizeImageWidth = 320.0;
 		double resizeImageHeight = 180.0;
 		int resizeImageInterpolation = Imgproc.INTER_CUBIC;
 		resizeImage(resizeImageInput, resizeImageWidth, resizeImageHeight, resizeImageInterpolation, resizeImageOutput);
