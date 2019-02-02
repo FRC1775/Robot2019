@@ -7,16 +7,17 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.core.MatOfPoint;
 
-
-
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.cameraserver.CameraServer;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -66,23 +67,36 @@ public class Robot extends TimedRobot {
 
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setResolution(640, 480);
+      camera.setResolution(320, 180);
+      camera.setExposureManual(0);
       CvSink cvSink = CameraServer.getInstance().getVideo();
-      CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 640, 480);
+      CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 320, 180);
         
         Mat source = new Mat();
         Mat output = new Mat();
         
         
 
-        if(source.empty()){
-          System.out.println( "she empty" );
-        }
+        WalkOfShamePipeline pipeline = new WalkOfShamePipeline();
 
         while(!Thread.interrupted()) {
-            cvSink.grabFrame(source);
-            System.out.println("huh " + source);
-            Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY); 
+            long frameTime = cvSink.grabFrame(source);
+            if(frameTime == 0){
+              continue; 
+            }
+          
+           // System.out.println("huh " + source);
+            if(source.empty()){
+              System.out.println( "she empty" );
+            }
+            // Imgproc.cvtColor(source, output, Imgproc.CV_BLUR);
+            pipeline.process(source);
+            output = pipeline.maskOutput(); 
+            ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
+            // Always draw contours
+            if (contours.size() > 0) {
+              Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
+            }
             outputStream.putFrame(output);
             
 
