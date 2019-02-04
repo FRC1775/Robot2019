@@ -52,8 +52,8 @@ public class WalkOfShamePipeline implements VisionPipeline {
 
 		// Step HSV_Threshold0:
 		Mat hsvThresholdInput = source0;
-		double[] hsvThresholdHue = {0.0, 83.74331550802141};
-		double[] hsvThresholdSaturation = {255.0, 255.0};
+		double[] hsvThresholdHue = {56.6, 106.25};
+		double[] hsvThresholdSaturation = {128.0, 255.0};
 		double[] hsvThresholdValue = {38.4180790960452, 255.0};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
