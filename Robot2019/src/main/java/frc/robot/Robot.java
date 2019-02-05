@@ -30,7 +30,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 
 /**
@@ -41,12 +40,27 @@ import frc.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
   public static UsbCamera driverCamera;
   private VisionThread visionThread;
 	private double centerX = 0.0;	
   private final Object imgLock = new Object();
+  private final double RESOLUTION_WIDTH = 320;
+  private final double RESOLUTION_HEIGHT = 180;
+  private final double TARGET_HEIGHT = 5.5;
+  private final double TARGET_WIDTH = 2.0625;
+  private final double FISH_RESOLUTION_HEIGHT = RESOLUTION_HEIGHT * TARGET_HEIGHT; 
+  private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
+  private double perimeter = 0.0;	
+  private double area = 0.0;
+  private double valuex = 0.0;
+  private double valuey = 0.0;
+  private double midx = 0.0;
+  private double midy = 0.0;
+  private double fieldOfViewHeight = 0;
+  private double fieldOfViewWidth = 0;
+  private double distanceHeight = 0; 
+  private double distanceWidth = 0; 
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -59,8 +73,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-  
+    // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
+    // visionThread.start();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
    // initCamera(); 
@@ -71,7 +85,7 @@ public class Robot extends TimedRobot {
       camera.setExposureManual(0);
       CvSink cvSink = CameraServer.getInstance().getVideo();
       CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 320, 180);
-        
+      
         Mat source = new Mat();
         Mat output = new Mat();
         
@@ -86,9 +100,7 @@ public class Robot extends TimedRobot {
             }
           
            // System.out.println("huh " + source);
-            if(source.empty()){
-              System.out.println( "she empty" );
-            }
+           
             // Imgproc.cvtColor(source, output, Imgproc.CV_BLUR);
             pipeline.process(source);
             output = pipeline.maskOutput(); 
@@ -98,13 +110,46 @@ public class Robot extends TimedRobot {
               Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
             }
             outputStream.putFrame(output);
-            
+            if (!pipeline.findContoursOutput().isEmpty()) {
+              Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
+              synchronized (imgLock) {
+                perimeter = 2 * r.width + 2 * r.height;
+                area = r.width * r.height;
+                midx = r.x + r.width / 2;
+                midy = r.y + r.height / 2;
+                valuex = (midx - 320 / 2) / (320 / 2);
+                valuey = (midy - 180 / 2) / (180 / 2);
+                // we need to be taking the smaller of the length or width in order to use this correctly
+                fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
+                distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(0.357) ) );
+
+                fieldOfViewWidth = FISH_RESOLUTION_WIDTH / r.width; 
+                distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(0.357) ) );
+                
+              }
+              //  System.out.println("perimeter: " + perimeter);
+              //  System.out.println("area: " + area);
+              //  System.out.println("X: " + valuex);
+              //  System.out.println("Y: " + valuey);
+              System.out.println( "distance height: " + distanceHeight );
+              System.out.println ("distance width: " + distanceWidth );
+              //System.out.println("width: " + r.width);
+              //System.out.println("height: " + r.height);
+            }else{
+              System.out.println("findContoursOutput is empty :(");
+            }      
 
    }
   
 }).start();
 
-  }
+
+}
+//Horizontal - 61
+//Vertical - 34.3
+
+// look into what the bounding box actually looks like / what the width is for an angled rectangle
+
 
   /**
    * This function is called every robot packet, no matter the mode. Use
