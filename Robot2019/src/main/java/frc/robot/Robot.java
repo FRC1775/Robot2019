@@ -121,10 +121,11 @@ public class Robot extends TimedRobot {
                 valuey = (midy - 180 / 2) / (180 / 2);
                 // we need to be taking the smaller of the length or width in order to use this correctly
                 fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
-                distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(0.357) ) );
+                distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(1.02798491) ) );
 
                 fieldOfViewWidth = FISH_RESOLUTION_WIDTH / r.width; 
-                distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(0.357) ) );
+                distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(1.02798491) ) );
+                //old angle = 0.357
                 
               }
               //  System.out.println("perimeter: " + perimeter);
@@ -145,7 +146,7 @@ public class Robot extends TimedRobot {
 
 
 }
-//Horizontal - 61
+//Horizontal - 61 58.8991967
 //Vertical - 34.3
 
 // look into what the bounding box actually looks like / what the width is for an angled rectangle
