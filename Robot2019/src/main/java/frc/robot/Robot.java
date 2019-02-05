@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   private final double RESOLUTION_WIDTH = 320;
   private final double RESOLUTION_HEIGHT = 180;
   private final double TARGET_HEIGHT = 5.5;
-  private final double TARGET_WIDTH = 2.0625;
+  private final double TARGET_WIDTH = 2;
   private final double FISH_RESOLUTION_HEIGHT = RESOLUTION_HEIGHT * TARGET_HEIGHT; 
   private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
   private double perimeter = 0.0;	
