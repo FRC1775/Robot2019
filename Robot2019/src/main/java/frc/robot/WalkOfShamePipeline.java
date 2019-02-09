@@ -284,17 +284,29 @@ public class WalkOfShamePipeline implements VisionPipeline {
 		Imgproc.findContours(input, contours, hierarchy, mode, method);
 	}
 	private void filterContours (List<MatOfPoint> contours) {
+		goodBoiArray.clear();
 		for (int i = 0; i < contours.size(); i++) {
 			Rect r = Imgproc.boundingRect(contours.get(i));
-			double width = r.width;
-			double height = r.height;
-			double area = width * height;
-			double perimeter = 2 * (width + height);
-			double actualRatio = area/perimeter;
-			if (actualRatio > .6 || actualRatio < .867 ) {
+			// double width = r.width;
+			// double height = r.height;
+			// double area = width * height;
+			// double perimeter = 2 * (width + height);
+			// double actualRatio = area/perimeter;
+			// if (actualRatio > .6 || actualRatio < .867 ) {
+			// 	goodBoiArray.add(contours.get(i));
+			final double area = Imgproc.contourArea(contours.get(i));
+			final double perimeter = Imgproc.arcLength(new MatOfPoint2f(contours.get(i).toArray()), true);
+			final double width = (2 * Math.sin(75.5)) + (5.5 * Math.sin(14.5));
+			final double height = (2 * Math.cos(75.5)) + (5.5 * Math.cos(14.5));
+			if (width/area > 0 || area/perimeter < 0) {
 				goodBoiArray.add(contours.get(i));
+				System.out.println( goodBoiArray.size());
+
 			}
-			System.out.println(goodBoiArray);
+
+
+
+			
 		}
 
 	} 
