@@ -33,7 +33,9 @@ public class WalkOfShamePipeline implements VisionPipeline {
 	private Mat hsvThresholdOutput = new Mat();
 	private Mat cvErodeOutput = new Mat();
 	private Mat maskOutput = new Mat();
+
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
+	private ArrayList<MatOfPoint> goodBoiArray = new ArrayList<MatOfPoint>();
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -75,7 +77,7 @@ public class WalkOfShamePipeline implements VisionPipeline {
 		Mat findContoursInput = hsvThresholdOutput;
 		boolean findContoursExternalOnly = false;
 		findContours(findContoursInput, findContoursExternalOnly, findContoursOutput);
-
+		filterContours( findContoursOutput);
 	}
 
 	/**
@@ -124,6 +126,9 @@ public class WalkOfShamePipeline implements VisionPipeline {
 	 */
 	public ArrayList<MatOfPoint> findContoursOutput() {
 		return findContoursOutput;
+	}
+	public ArrayList<MatOfPoint> goodBoiArray() {
+		return goodBoiArray;
 	}
 
 
@@ -278,7 +283,21 @@ public class WalkOfShamePipeline implements VisionPipeline {
 		int method = Imgproc.CHAIN_APPROX_SIMPLE;
 		Imgproc.findContours(input, contours, hierarchy, mode, method);
 	}
+	private void filterContours (List<MatOfPoint> contours) {
+		for (int i = 0; i < contours.size(); i++) {
+			Rect r = Imgproc.boundingRect(contours.get(i));
+			double width = r.width;
+			double height = r.height;
+			double area = width * height;
+			double perimeter = 2 * (width + height);
+			double actualRatio = area/perimeter;
+			if (actualRatio > .6 || actualRatio < .867 ) {
+				goodBoiArray.add(contours.get(i));
+			}
+			System.out.println(goodBoiArray);
+		}
 
+	} 
 
 
 

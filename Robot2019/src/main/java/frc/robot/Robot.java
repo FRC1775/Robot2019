@@ -51,6 +51,9 @@ public class Robot extends TimedRobot {
   private final double TARGET_WIDTH = 2;
   private final double FISH_RESOLUTION_HEIGHT = RESOLUTION_HEIGHT * TARGET_HEIGHT; 
   private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
+  private final double WIDTH_FOV = .3715;
+  private final double HEIGHT_FOV = .235;
+
   private double perimeter = 0.0;	
   private double area = 0.0;
   private double valuex = 0.0;
@@ -104,14 +107,14 @@ public class Robot extends TimedRobot {
             // Imgproc.cvtColor(source, output, Imgproc.CV_BLUR);
             pipeline.process(source);
             output = pipeline.maskOutput(); 
-            ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
+            ArrayList<MatOfPoint> contours = pipeline.goodBoiArray();
             // Always draw contours
             if (contours.size() > 0) {
               Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
             }
             outputStream.putFrame(output);
-            if (!pipeline.findContoursOutput().isEmpty()) {
-              Rect r = Imgproc.boundingRect(pipeline.findContoursOutput().get(0));
+            if (contours.size() == 1) {
+              Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
               synchronized (imgLock) {
                 perimeter = 2 * r.width + 2 * r.height;
                 area = r.width * r.height;
@@ -121,10 +124,10 @@ public class Robot extends TimedRobot {
                 valuey = (midy - 180 / 2) / (180 / 2);
                 // we need to be taking the smaller of the length or width in order to use this correctly
                 fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
-                distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(1.02798491) ) );
+                distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(HEIGHT_FOV) ) );
 
                 fieldOfViewWidth = FISH_RESOLUTION_WIDTH / r.width; 
-                distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(1.02798491) ) );
+                distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(WIDTH_FOV) ) );
                 //old angle = 0.357
                 
               }
