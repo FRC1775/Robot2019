@@ -295,13 +295,13 @@ public class WalkOfShamePipeline implements VisionPipeline {
 			// if (actualRatio > .6 || actualRatio < .867 ) {
 			// 	goodBoiArray.add(contours.get(i));
 			final double area = Imgproc.contourArea(contours.get(i));
-			final double perimeter = Imgproc.arcLength(new MatOfPoint2f(contours.get(i).toArray()), true);
-			final double width = (2 * Math.sin(75.5)) + (5.5 * Math.sin(14.5));
-			final double height = (2 * Math.cos(75.5)) + (5.5 * Math.cos(14.5));
-			if (width/area > 0 || area/perimeter < 0) {
+			//final double perimeter = Imgproc.arcLength(new MatOfPoint2f(contours.get(i).toArray()), true);
+	
+			// final double width = (2 * Math.sin(75.5)) + (5.5 * Math.sin(14.5));
+			// final double height = (2 * Math.cos(75.5)) + (5.5 * Math.cos(14.5));
+			if (r.width/r.height > 0 && r.width/r.height < 10 ) {
 				goodBoiArray.add(contours.get(i));
-				System.out.println( goodBoiArray.size());
-
+				System.out.println( goodBoiArray.size()); 
 			}
 
 

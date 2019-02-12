@@ -47,8 +47,8 @@ public class Robot extends TimedRobot {
   private final Object imgLock = new Object();
   private final double RESOLUTION_WIDTH = 320;
   private final double RESOLUTION_HEIGHT = 180;
-  private final double TARGET_HEIGHT = 5.5;
-  private final double TARGET_WIDTH = 2;
+  final double TARGET_WIDTH = (2 * Math.sin(75.5)) + (5.5 * Math.sin(14.5));
+  final double TARGET_HEIGHT = (2 * Math.cos(75.5)) + (5.5 * Math.cos(14.5));
   private final double FISH_RESOLUTION_HEIGHT = RESOLUTION_HEIGHT * TARGET_HEIGHT; 
   private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
   private final double WIDTH_FOV = .3715;
@@ -107,13 +107,14 @@ public class Robot extends TimedRobot {
             // Imgproc.cvtColor(source, output, Imgproc.CV_BLUR);
             pipeline.process(source);
             output = pipeline.maskOutput(); 
-            ArrayList<MatOfPoint> contours = pipeline.goodBoiArray();
+            ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
             // Always draw contours
             if (contours.size() > 0) {
               Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
             }
             outputStream.putFrame(output);
-            if (contours.size() == 1) {
+            
+            if (pipeline.goodBoiArray().size() == 1) {
               Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
               synchronized (imgLock) {
                 perimeter = 2 * r.width + 2 * r.height;
