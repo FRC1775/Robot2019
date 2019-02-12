@@ -114,7 +114,7 @@ public class Robot extends TimedRobot {
             }
             outputStream.putFrame(output);
             
-            if (pipeline.goodBoiArray().size() == 1) {
+            if (pipeline.goodBoiArray().size() > 0) {
               Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
               synchronized (imgLock) {
                 perimeter = 2 * r.width + 2 * r.height;
