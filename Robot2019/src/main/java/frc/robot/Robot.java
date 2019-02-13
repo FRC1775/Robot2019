@@ -46,13 +46,13 @@ public class Robot extends TimedRobot {
 	private double centerX = 0.0;	
   private final Object imgLock = new Object();
   private final double RESOLUTION_WIDTH = 320;
-  private final double RESOLUTION_HEIGHT = 180;
-  final double TARGET_WIDTH = (2 * Math.sin(75.5)) + (5.5 * Math.sin(14.5));
-  final double TARGET_HEIGHT = (2 * Math.cos(75.5)) + (5.5 * Math.cos(14.5));
+  private final double RESOLUTION_HEIGHT = 240;
+  final double TARGET_WIDTH = (2 * Math.sin(1.318)) + (5.5 * Math.sin(0.2531));
+  final double TARGET_HEIGHT = (2 * Math.cos(1.318)) + (5.5 * Math.cos(0.2531));
   private final double FISH_RESOLUTION_HEIGHT = RESOLUTION_HEIGHT * TARGET_HEIGHT; 
   private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
-  private final double WIDTH_FOV = .3715;
-  private final double HEIGHT_FOV = .235;
+  private final double WIDTH_FOV = .48;
+  private final double HEIGHT_FOV = .353;
 
   private double perimeter = 0.0;	
   private double area = 0.0;
@@ -81,13 +81,12 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
    // initCamera(); 
-
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-      camera.setResolution(320, 180);
+      camera.setResolution(320, 240);
       camera.setExposureManual(0);
       CvSink cvSink = CameraServer.getInstance().getVideo();
-      CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 320, 180);
+      CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 320, 240);
       
         Mat source = new Mat();
         Mat output = new Mat();
@@ -136,8 +135,11 @@ public class Robot extends TimedRobot {
               //  System.out.println("area: " + area);
               //  System.out.println("X: " + valuex);
               //  System.out.println("Y: " + valuey);
+              /* Distance calculating height is more accurate then using width. If it
+              is changing between values then the smaller one is generally correct 
+              */
               System.out.println( "distance height: " + distanceHeight );
-              System.out.println ("distance width: " + distanceWidth );
+              //System.out.println ("distance width: " + distanceWidth );
               //System.out.println("width: " + r.width);
               //System.out.println("height: " + r.height);
             }else{

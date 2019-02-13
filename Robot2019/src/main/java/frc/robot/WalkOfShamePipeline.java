@@ -299,10 +299,18 @@ public class WalkOfShamePipeline implements VisionPipeline {
 	
 			// final double width = (2 * Math.sin(75.5)) + (5.5 * Math.sin(14.5));
 			// final double height = (2 * Math.cos(75.5)) + (5.5 * Math.cos(14.5));
-			System.out.println(r.height/r.width);
-			if (r.height/r.width > 0 && r.height/r.width < 1 ) {
+			
+
+			// if (r.height/r.width > 0 && r.height/r.width < 1 ) {
+			// 	goodBoiArray.add(contours.get(i));
+			// 	// System.out.println( goodBoiArray.size()); 
+			// }
+
+			if ( r.width > 10 && r.height > 10 ){
 				goodBoiArray.add(contours.get(i));
-				System.out.println( goodBoiArray.size()); 
+				System.out.println("height: " + r.height);
+				System.out.println("width: " + r.width);
+			
 			}
 
 
