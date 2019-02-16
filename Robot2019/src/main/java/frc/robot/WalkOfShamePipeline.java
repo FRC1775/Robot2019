@@ -56,7 +56,7 @@ public class WalkOfShamePipeline implements VisionPipeline {
 		Mat hsvThresholdInput = source0;
 		double[] hsvThresholdHue = {56.6, 106.25};
 		double[] hsvThresholdSaturation = {128.0, 255.0};
-		double[] hsvThresholdValue = {85, 255.0};
+		double[] hsvThresholdValue = {85.0, 255.0};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
 		// Step CV_erode0:
@@ -127,6 +127,8 @@ public class WalkOfShamePipeline implements VisionPipeline {
 	public ArrayList<MatOfPoint> findContoursOutput() {
 		return findContoursOutput;
 	}
+
+
 	public ArrayList<MatOfPoint> goodBoiArray() {
 		return goodBoiArray;
 	}
@@ -308,19 +310,9 @@ public class WalkOfShamePipeline implements VisionPipeline {
 
 			if ( r.width > 10 && r.height > 10 ){
 				goodBoiArray.add(contours.get(i));
-				System.out.println("height: " + r.height);
-				System.out.println("width: " + r.width);
 			
-			}
-
-
-
-			
+			}	
 		}
-
 	} 
-
-
-
 }
 
