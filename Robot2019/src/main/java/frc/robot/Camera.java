@@ -145,7 +145,8 @@ public class Camera  {
       bounds = Imgproc.minAreaRect(angleOneModified);
       boundingAngle = adjustAngle(bounds);
       double centerx = bounds.center.x;
-      angles_array.add(new XAndAngle(centerx, boundingAngle));
+      int index = sortArray(angles_array, centerx);
+      angles_array.add(index, new XAndAngle(centerx, boundingAngle));
       if(i == 0){
         SmartDashboard.putNumber("Angle 0", boundingAngle);
       } else{
@@ -162,5 +163,16 @@ public class Camera  {
       return calculatedRect.angle + 90;
     }
   } 
+
+  public int sortArray(ArrayList<XAndAngle> array, double centerX){
+    double currentX;
+    for(int i = 0; i < array.size(); i++){
+      currentX = array.get(i).XVal;
+      if(centerX < currentX){
+        return i;
+      }
+    }
+    return array.size() - 1;
+  }
 }
 
