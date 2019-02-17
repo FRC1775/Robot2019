@@ -6,6 +6,9 @@ import frc.robot.RobotMap;
 public class CloseIntake extends InstantCommand {
     protected void execute() {
         RobotMap.intakeOpen.set(false);
-    	RobotMap.intakeClose.set(true);
+        RobotMap.intakeClose.set(true);
+        
+        RobotMap.secondSolenoidOpen.set(false);
+        RobotMap.secondSolenoidClose.set(true);
     }
 }

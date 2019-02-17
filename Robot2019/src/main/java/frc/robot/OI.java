@@ -19,7 +19,7 @@ import frc.robot.commands.OpenIntake;
  */
 public class OI {
   public void init(){
-    Joystick stick = new Joystick(0);
+    Joystick stick = new Joystick(1);
     Button buttonOne = new JoystickButton(stick, 1);
     buttonOne.whenPressed(new OpenIntake());
     Button buttonTwo = new JoystickButton(stick, 2);
