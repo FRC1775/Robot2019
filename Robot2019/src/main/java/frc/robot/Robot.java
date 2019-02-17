@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,6 +41,7 @@ import frc.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static LiftSubsystem liftSubsystem;
   public static OI m_oi;
   public static UsbCamera driverCamera;
   private VisionThread visionThread;
@@ -76,6 +78,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
+    liftSubsystem = new LiftSubsystem();
     // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
     // visionThread.start();
     // chooser.addOption("My Auto", new MyAutoCommand());
