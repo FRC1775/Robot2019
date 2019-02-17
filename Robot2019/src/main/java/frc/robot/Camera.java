@@ -92,7 +92,7 @@ public class Camera  {
           // for our target hatch. This is the tape we will use to preform distance calculations.
           int indexOfRightTarget = compareAngles(pipeline.goodBoiArray());
           SmartDashboard.putNumber("index of right target", indexOfRightTarget);
-          Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(indexOfRightTarget));
+          Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
           synchronized (imgLock) {
             perimeter = 2 * r.width + 2 * r.height;
             area = r.width * r.height;
@@ -152,7 +152,7 @@ public class Camera  {
     }else{
       // There is only one element in the array. We assume for now that it's the right target, though
       // we need to write code that handles if it's the left target instead. 
-      return 0;
+      return -1;
     }
   }
 
@@ -183,13 +183,21 @@ public class Camera  {
       // It can be modified to suit any number of strips.
       if(i == 0){
         SmartDashboard.putNumber("Angle 0", boundingAngle);
+        SmartDashboard.putNumber("CenterX 0", centerx);
+        SmartDashboard.putNumber("original index 0", i);
       } else if(i == 1) {
         SmartDashboard.putNumber("Angle 1", boundingAngle);
+        SmartDashboard.putNumber("CenterX 1", centerx);
+        SmartDashboard.putNumber("original index 1", i);
       }else if(i == 2){
         SmartDashboard.putNumber("Angle 2", boundingAngle);
+        SmartDashboard.putNumber("CenterX 2", centerx);
+        SmartDashboard.putNumber("original index 2", i);
       }
     }
-
+    for(int i = 0; i < angles_array.size(); i++){
+      System.out.println("original index: " + angles_array.get(i).originalIndex + "  new index: " + i);
+    }
     // returns a list of (centerX, rotated angle, index in goodBoiArray)
     return angles_array;
   }
@@ -224,7 +232,7 @@ public class Camera  {
     }
 
     // Center x is greater than every other value in the array. Put it last
-    return array.size() - 1;
+    return array.size();
   }
 
   public int findTarget(ArrayList<XAndAngle> array){
@@ -233,8 +241,8 @@ public class Camera  {
       // Check that the angles are close to supplementary as an extra 
       // filter to verify that we have the correct contours
       angleSum = array.get(i).angleVal + array.get(i + 1).angleVal;
-      if(160 <= angleSum && angleSum <= 200
-        && array.get(i).angleVal < 90 && array.get(i + 1).angleVal > 90){
+      if(//160 <= angleSum && angleSum <= 200 &&
+         array.get(i).angleVal < 90 && array.get(i + 1).angleVal > 90){
         // If both are angled inwards, the target is in between them.
         // We want to always return the rightmost strip of tape
         return array.get(i + 1).originalIndex;
