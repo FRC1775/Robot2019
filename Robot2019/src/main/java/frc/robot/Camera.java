@@ -43,6 +43,7 @@ public class Camera  {
   private double fieldOfViewWidth = 0;
   private double distanceHeight = 0; 
   private double distanceWidth = 0; 
+  private double inchesOffCenter = 0;
 
   public void init(){
     new Thread(() -> {
@@ -106,6 +107,11 @@ public class Camera  {
 
             fieldOfViewWidth = FISH_RESOLUTION_WIDTH / r.width; 
             distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(WIDTH_FOV) ) );
+
+            inchesOffCenter = calculateInchesOffCenter(fieldOfViewWidth, midx);
+            angleOffCenter(distanceHeight, inchesOffCenter);
+            distanceOffCenter(distanceHeight, inchesOffCenter);
+
           }
           //  System.out.println("perimeter: " + perimeter);
           //  System.out.println("area: " + area);
@@ -124,6 +130,17 @@ public class Camera  {
       }
     }).start();      
   }
+
+  public double calculateInchesOffCenter(double FOVwidth, double x){
+    double offCenterPixels = x - (RESOLUTION_WIDTH / 2);
+    double offCenterInches = offCenterPixels * FOVwidth / RESOLUTION_WIDTH;
+    return offCenterInches;
+  }
+
+  public double distanceOffCenter(double distanceH, double offCenterInches){
+    
+  }
+
 
   // class created to allow us to store the x value of the center of
   // a rotated rectangle, the angle at which that rectangle is rotated,
