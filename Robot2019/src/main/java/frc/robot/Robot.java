@@ -75,7 +75,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    RobotMap.init();
     m_oi = new OI();
+    m_oi.init();
     // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
     // visionThread.start();
     // chooser.addOption("My Auto", new MyAutoCommand());
