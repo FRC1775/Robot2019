@@ -319,8 +319,4 @@ public class WalkOfShamePipeline implements VisionPipeline {
 		}
 
 	} 
-
-
-
 }
-
