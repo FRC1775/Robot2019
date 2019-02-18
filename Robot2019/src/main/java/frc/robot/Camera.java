@@ -29,6 +29,7 @@ public class Camera  {
   private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
   private final double WIDTH_FOV = .48;
   private final double HEIGHT_FOV = .353;
+  private final double MIDPOINTS_DISTANCE = 11.313;
 
   private double midx = 0.0;
   private double fieldOfViewHeight = 0;
@@ -85,11 +86,17 @@ public class Camera  {
           synchronized (imgLock) {
             // find the index in goodBoiArray of the rightmost strip of tape 
             // for our target hatch. This is the tape we will use to preform distance calculations.
-            int indexOfRightTarget = compareAngles(pipeline.goodBoiArray());
-            SmartDashboard.putNumber("index of right target", indexOfRightTarget);
-            Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(indexOfRightTarget));
-           
+            ArrayList<ModifyLeftTarget> findingRightTarget = compareAngles(pipeline.goodBoiArray());
+            SmartDashboard.putNumber("index of right target", findingRightTarget.get(0).index);
+            Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(findingRightTarget.get(0).index));
+            
             midx = r.x + r.width / 2;
+
+            if (findingRightTarget.get(0).isLeft){
+             midx = midx + MIDPOINTS_DISTANCE;
+            }
+           
+            
 
             fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
             distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(HEIGHT_FOV) ) );
@@ -139,20 +146,37 @@ public class Camera  {
     }
   }
 
+  public class ModifyLeftTarget{
+    public int index;
+    public boolean isLeft; 
+
+    public ModifyLeftTarget (int index, boolean isLeft){
+      this.index = index;
+      this.isLeft = isLeft; 
+    }
+  }
+
   
-  public int compareAngles(ArrayList<MatOfPoint> contours){
+  public ArrayList<ModifyLeftTarget> compareAngles(ArrayList<MatOfPoint> contours){
     // Finds the rotated rectangle for each of the strips of tape we see, 
     // then stores them in angles_array as (center x value, angle of rotation, index in goodBoiArray)
     ArrayList<XAndAngle> angles_array = findRotatedRectangle(contours);
+    ArrayList<ModifyLeftTarget> returnValue = new ArrayList<ModifyLeftTarget>();
 
     // If there are at least two pieces of tape being seen, determine which is to the right of a target.
     if(angles_array.size() >= 2){
-      return findTarget(angles_array);
-    }else{
-      // There is only one element in the array. We assume for now that it's the right target, though
-      // we need to write code that handles if it's the left target instead. 
-      return 0;
+      returnValue.add(new ModifyLeftTarget (findTarget(angles_array), false)); 
+      return returnValue;
     }
+    // There is only one element in the array, and it's the left target. 
+    if(angles_array.get(0).angleVal < 90){
+      returnValue.add(new ModifyLeftTarget (0, true)); 
+      return returnValue;
+
+    }
+    // There is only one element in the array, and it's the right target. 
+    returnValue.add(new ModifyLeftTarget (0, false)); 
+    return returnValue;
   }
 
   // for each of the contours, generates a rotated rectangle and puts its 
