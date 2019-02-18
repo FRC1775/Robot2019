@@ -14,7 +14,8 @@ import frc.robot.RobotMap;
 import frc.robot.OI;
 
 /**
- * An example command.  You can replace me with your own command.
+ * Gets the values of the joysticks on the first driver's controller.
+ * The left joystick controls our forward/backward movement, and the right joystick controls turning. 
  */
 public class Drive extends Command {
 
@@ -35,27 +36,12 @@ public class Drive extends Command {
     double yVal=OI.stick.getRawAxis(1);
     double xVal=OI.stick.getRawAxis(4);
 
-    Robot.motorSubsystem.drive (yVal , xVal);
-    
+    Robot.motorSubsystem.drive(yVal , xVal);
      
   }
  
-
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    
     return false;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
   }
 }

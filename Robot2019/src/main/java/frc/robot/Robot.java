@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
   public static MotorSubsystem motorSubsystem;
   public static OI m_oi;
 
-  Command m_autonomousCommand; // Hello  
+  Command m_autonomousCommand; 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
