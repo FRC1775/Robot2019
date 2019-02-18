@@ -109,8 +109,9 @@ public class Camera  {
             distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(WIDTH_FOV) ) );
 
             inchesOffCenter = calculateInchesOffCenter(fieldOfViewWidth, midx);
-            angleOffCenter(distanceHeight, inchesOffCenter);
-            distanceOffCenter(distanceHeight, inchesOffCenter);
+            SmartDashboard.putNumber("inches from the center", inchesOffCenter);
+            calculateAngleOffCenter(distanceHeight, inchesOffCenter);
+            calculateDistanceOffCenter(distanceHeight, inchesOffCenter);
 
           }
           //  System.out.println("perimeter: " + perimeter);
@@ -137,8 +138,18 @@ public class Camera  {
     return offCenterInches;
   }
 
-  public double distanceOffCenter(double distanceH, double offCenterInches){
-    
+  // returns the angle by which the target is off center in degrees
+  // check if it returns negative degrees
+  public double calculateAngleOffCenter(double distanceH, double offCenterInches){
+    double tangentAngle = offCenterInches / distanceH;
+    SmartDashboard.putNumber("angle off center degrees", Math.toDegrees(Math.atan(tangentAngle)));
+    return Math.toDegrees(Math.atan(tangentAngle));
+  }
+
+  public double calculateDistanceOffCenter(double distanceH, double offCenterInches){
+    double pythagorean = (distanceH *distanceH) + (offCenterInches * offCenterInches);
+    SmartDashboard.putNumber("distance off center (hypotenuse)", Math.sqrt(pythagorean));
+    return Math.sqrt(pythagorean);
   }
 
 
