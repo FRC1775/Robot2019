@@ -1,8 +1,6 @@
 package frc.robot;
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -11,7 +9,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,12 +30,7 @@ public class Camera  {
   private final double WIDTH_FOV = .48;
   private final double HEIGHT_FOV = .353;
 
-  private double perimeter = 0.0;	
-  private double area = 0.0;
-  private double valuex = 0.0;
-  private double valuey = 0.0;
   private double midx = 0.0;
-  private double midy = 0.0;
   private double fieldOfViewHeight = 0;
   private double fieldOfViewWidth = 0;
   private double distanceHeight = 0; 
@@ -76,7 +68,7 @@ public class Camera  {
           Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
          
           // draws the contours of the rotated rectangle
-          for(int i = 0; i < contours.size(); i++){
+         /* for(int i = 0; i < contours.size(); i++){
             MatOfPoint2f angleOneModified = new MatOfPoint2f(contours.get(0).toArray());
             RotatedRect rotatedRect = Imgproc.minAreaRect(angleOneModified);
             Point[] vertices = new Point[4];
@@ -84,23 +76,20 @@ public class Camera  {
             List<MatOfPoint> boxContours = new ArrayList<>();
             boxContours.add(new MatOfPoint(vertices));
             Imgproc.drawContours(output, boxContours, 0, new Scalar(128, 128, 128), -1);
-          }
+          }*/
         }
         outputStream.putFrame(output);
 
         if (pipeline.goodBoiArray().size() > 0) {
-          // find the index in goodBoiArray of the rightmost strip of tape 
-          // for our target hatch. This is the tape we will use to preform distance calculations.
-          int indexOfRightTarget = compareAngles(pipeline.goodBoiArray());
-          SmartDashboard.putNumber("index of right target", indexOfRightTarget);
-          Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
+          
           synchronized (imgLock) {
-            perimeter = 2 * r.width + 2 * r.height;
-            area = r.width * r.height;
+            // find the index in goodBoiArray of the rightmost strip of tape 
+            // for our target hatch. This is the tape we will use to preform distance calculations.
+            int indexOfRightTarget = compareAngles(pipeline.goodBoiArray());
+            SmartDashboard.putNumber("index of right target", indexOfRightTarget);
+            Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(indexOfRightTarget));
+           
             midx = r.x + r.width / 2;
-            midy = r.y + r.height / 2;
-            valuex = (midx - 320 / 2) / (320 / 2);
-            valuey = (midy - 180 / 2) / (180 / 2);
 
             fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
             distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(HEIGHT_FOV) ) );
@@ -111,22 +100,11 @@ public class Camera  {
             inchesOffCenter = calculateInchesOffCenter(fieldOfViewWidth, midx);
             SmartDashboard.putNumber("inches from the center", inchesOffCenter);
             calculateAngleOffCenter(distanceHeight, inchesOffCenter);
-            calculateDistanceOffCenter(distanceHeight, inchesOffCenter);
 
           }
-          //  System.out.println("perimeter: " + perimeter);
-          //  System.out.println("area: " + area);
-          //  System.out.println("X: " + valuex);
-          //  System.out.println("Y: " + valuey);
-          /* Distance calculating height is more accurate then using width. If it
-          is changing between values then the smaller one is generally correct 
-          */
-          //System.out.println( "distance height: " + distanceHeight );
+         
           SmartDashboard.putNumber("DistanceHeight:", distanceHeight);
           SmartDashboard.putBoolean("GoodBoiArray has values in it", pipeline.goodBoiArray().size() > 0);
-          //System.out.println ("distance width: " + distanceWidth );
-          //System.out.println("width: " + r.width);
-          //System.out.println("height: " + r.height);
         }    
       }
     }).start();      
@@ -145,13 +123,6 @@ public class Camera  {
     SmartDashboard.putNumber("angle off center degrees", Math.toDegrees(Math.atan(tangentAngle)));
     return Math.toDegrees(Math.atan(tangentAngle));
   }
-
-  public double calculateDistanceOffCenter(double distanceH, double offCenterInches){
-    double pythagorean = (distanceH *distanceH) + (offCenterInches * offCenterInches);
-    SmartDashboard.putNumber("distance off center (hypotenuse)", Math.sqrt(pythagorean));
-    return Math.sqrt(pythagorean);
-  }
-
 
   // class created to allow us to store the x value of the center of
   // a rotated rectangle, the angle at which that rectangle is rotated,
@@ -180,7 +151,7 @@ public class Camera  {
     }else{
       // There is only one element in the array. We assume for now that it's the right target, though
       // we need to write code that handles if it's the left target instead. 
-      return -1;
+      return 0;
     }
   }
 

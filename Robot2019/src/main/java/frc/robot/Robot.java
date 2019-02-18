@@ -7,30 +7,11 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.core.MatOfPoint;
-
-import edu.wpi.first.cameraserver.CameraServer;
-
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.first.vision.VisionPipeline;
-import edu.wpi.first.vision.VisionRunner;
-import edu.wpi.first.vision.VisionThread;
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.ExampleSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,34 +22,10 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends TimedRobot {
   public static OI m_oi;
-  public static UsbCamera driverCamera;
   public static Camera cameraFile;
-  private VisionThread visionThread;
-	private double centerX = 0.0;	
-  private final Object imgLock = new Object();
-  private final double RESOLUTION_WIDTH = 320;
-  private final double RESOLUTION_HEIGHT = 240;
-  final double TARGET_WIDTH = (2 * Math.sin(1.318)) + (5.5 * Math.sin(0.2531));
-  final double TARGET_HEIGHT = (2 * Math.cos(1.318)) + (5.5 * Math.cos(0.2531));
-  private final double FISH_RESOLUTION_HEIGHT = RESOLUTION_HEIGHT * TARGET_HEIGHT; 
-  private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
-  private final double WIDTH_FOV = .48;
-  private final double HEIGHT_FOV = .353;
-
-  private double perimeter = 0.0;	
-  private double area = 0.0;
-  private double valuex = 0.0;
-  private double valuey = 0.0;
-  private double midx = 0.0;
-  private double midy = 0.0;
-  private double fieldOfViewHeight = 0;
-  private double fieldOfViewWidth = 0;
-  private double distanceHeight = 0; 
-  private double distanceWidth = 0; 
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
 
   /**
    * This function is run when the robot is first started up and should be
@@ -77,19 +34,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
-    // visionThread.start();
-    // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
     cameraFile = new Camera();
     cameraFile.init();
-   // initCamera(); 
 }
-//Horizontal - 61 58.8991967
-//Vertical - 34.3
-
-// look into what the bounding box actually looks like / what the width is for an angled rectangle
-
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -102,7 +50,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
    
-//we want to get the modified image onto the smart dashboard    
   }
 
   /**
