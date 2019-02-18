@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -27,4 +29,8 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
   public static Talon liftMotor = new Talon(2);
+  public static Encoder liftEncoder = new Encoder(1, 2, false, Encoder.EncodingType.k1X);
+  public static DigitalInput liftBottomLimitSwitch = new DigitalInput(3);
+  public static DigitalInput liftTopLimitSwitch = new DigitalInput(4);
+
 }

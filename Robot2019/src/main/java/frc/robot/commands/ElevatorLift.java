@@ -1,7 +1,11 @@
-package frc.robot;
+package frc.robot.commands;
+
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class ElevatorLift extends Command{
     public ElevatorLift(){
@@ -10,21 +14,22 @@ public class ElevatorLift extends Command{
 
     @Override
     protected void execute() {
-        double turnValue = 0;
+        double speed = 0;
         double leftTrigger = OI.stick.getRawAxis(2);
         double rightTrigger = OI.stick.getRawAxis(3);
-        if(leftTrigger > 0){
-            turnValue = -leftTrigger;
+        if(leftTrigger > .15){
+            speed = -leftTrigger;
+            //Robot.liftSubsystem.setSpeed(-leftTrigger);
+
         }
-        if(rightTrigger > 0){
-            turnValue = rightTrigger;
+        if(rightTrigger > .15){
+            speed = rightTrigger;
+            //Robot.liftSubsystem.setSpeed(rightTrigger);
+
         }
-        if(rightTrigger > 0 && leftTrigger > 0){
-            //Might wanna change this part later to "turnValue = 0"
-            turnValue = rightTrigger - leftTrigger;
-        }
-        RobotMap.liftMotor.set(turnValue);
-        SmartDashboard.putNumber("turnValue", turnValue);
+
+        RobotMap.liftMotor.set(speed);
+        SmartDashboard.putNumber("speed", speed);
     }
 
     @Override
