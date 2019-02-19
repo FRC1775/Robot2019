@@ -9,9 +9,7 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -21,8 +19,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
-import edu.wpi.first.vision.VisionPipeline;
-import edu.wpi.first.vision.VisionRunner;
 import edu.wpi.first.vision.VisionThread;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -31,7 +27,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ExampleSubsystem;
+<<<<<<< HEAD
 import frc.robot.subsystems.LiftSubsystem;
+=======
+import frc.robot.subsystems.MotorSubsystem;
+>>>>>>> master
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,11 +41,14 @@ import frc.robot.subsystems.LiftSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+<<<<<<< HEAD
   public static LiftSubsystem liftSubsystem;
+=======
+  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+  public static MotorSubsystem motorSubsystem;
+>>>>>>> master
   public static OI m_oi;
   public static UsbCamera driverCamera;
-  private VisionThread visionThread;
-	private double centerX = 0.0;	
   private final Object imgLock = new Object();
   private final double RESOLUTION_WIDTH = 320;
   private final double RESOLUTION_HEIGHT = 240;
@@ -56,10 +59,6 @@ public class Robot extends TimedRobot {
   private final double WIDTH_FOV = .48;
   private final double HEIGHT_FOV = .353;
 
-  private double perimeter = 0.0;	
-  private double area = 0.0;
-  private double valuex = 0.0;
-  private double valuey = 0.0;
   private double midx = 0.0;
   private double midy = 0.0;
   private double fieldOfViewHeight = 0;
@@ -67,7 +66,7 @@ public class Robot extends TimedRobot {
   private double distanceHeight = 0; 
   private double distanceWidth = 0; 
 
-  Command m_autonomousCommand;
+  Command m_autonomousCommand; 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
@@ -81,6 +80,7 @@ public class Robot extends TimedRobot {
     liftSubsystem = new LiftSubsystem();
     // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
     // visionThread.start();
+    motorSubsystem = new MotorSubsystem();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
    // initCamera(); 
@@ -119,12 +119,8 @@ public class Robot extends TimedRobot {
             if (pipeline.goodBoiArray().size() > 0) {
               Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
               synchronized (imgLock) {
-                perimeter = 2 * r.width + 2 * r.height;
-                area = r.width * r.height;
                 midx = r.x + r.width / 2;
                 midy = r.y + r.height / 2;
-                valuex = (midx - 320 / 2) / (320 / 2);
-                valuey = (midy - 180 / 2) / (180 / 2);
                 // we need to be taking the smaller of the length or width in order to use this correctly
                 fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
                 distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(HEIGHT_FOV) ) );

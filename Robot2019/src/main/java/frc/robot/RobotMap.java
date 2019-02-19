@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -33,4 +36,9 @@ public class RobotMap {
   public static DigitalInput liftBottomLimitSwitch;
   public static DigitalInput liftTopLimitSwitch;
 
+  public static int leftMotor = 1;
+  public static int rightMotor = 0;
+  public static Talon leftDrive = new Talon(leftMotor);
+  public static Talon rightDrive = new Talon(rightMotor);
+  public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
 }
