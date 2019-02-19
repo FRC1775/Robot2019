@@ -66,7 +66,7 @@ public class LiftSubsystem extends Subsystem {
     
 		SmartDashboard.putNumber("lift encoder", RobotMap.liftEncoder.getDistance());
 		SmartDashboard.putBoolean("is seeing bottom limit switch", !RobotMap.liftBottomLimitSwitch.get());
-		RobotMap.liftMotor.set(outputSpeed); // Must call set, not setSpeed, to take into account the setInverted on the controller
+		RobotMap.liftMotorController.set(outputSpeed); // Must call set, not setSpeed, to take into account the setInverted on the controller
   }
   
   private boolean isAllowedToGoUp(double inputLiftSpeed) {

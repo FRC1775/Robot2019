@@ -27,11 +27,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ExampleSubsystem;
-<<<<<<< HEAD
 import frc.robot.subsystems.LiftSubsystem;
-=======
 import frc.robot.subsystems.MotorSubsystem;
->>>>>>> master
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,12 +38,9 @@ import frc.robot.subsystems.MotorSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-<<<<<<< HEAD
   public static LiftSubsystem liftSubsystem;
-=======
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static MotorSubsystem motorSubsystem;
->>>>>>> master
   public static OI m_oi;
   public static UsbCamera driverCamera;
   private final Object imgLock = new Object();
