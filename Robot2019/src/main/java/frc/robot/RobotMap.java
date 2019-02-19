@@ -40,7 +40,7 @@ public class RobotMap {
   public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
 
   public static Talon liftMotorController = new Talon(liftMotor);
-  public static Talon secondLiftMotorController = new Talon(secondLiftMotor);
+  // public static Talon secondLiftMotorController = new Talon(secondLiftMotor);
   public static Encoder liftEncoder;
   public static DigitalInput liftBottomLimitSwitch;
   public static DigitalInput liftTopLimitSwitch;
