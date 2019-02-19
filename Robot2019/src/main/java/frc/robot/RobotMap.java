@@ -31,14 +31,16 @@ public class RobotMap {
   // number and the module. For example you with a rangefinder:
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
-  public static Talon liftMotorController = new Talon(2);
+  public static int leftMotor = 1;
+  public static int rightMotor = 0;
+  public static int liftMotor = 2;
+  public static Talon leftDrive = new Talon(leftMotor);
+  public static Talon rightDrive = new Talon(rightMotor);
+  public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
+
+  public static Talon liftMotorController = new Talon(liftMotor);
   public static Encoder liftEncoder;
   public static DigitalInput liftBottomLimitSwitch;
   public static DigitalInput liftTopLimitSwitch;
 
-  public static int leftMotor = 1;
-  public static int rightMotor = 0;
-  public static Talon leftDrive = new Talon(leftMotor);
-  public static Talon rightDrive = new Talon(rightMotor);
-  public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
-}
+  }
