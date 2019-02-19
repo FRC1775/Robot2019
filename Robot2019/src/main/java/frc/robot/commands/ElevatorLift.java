@@ -29,7 +29,7 @@ public class ElevatorLift extends Command{
         }
 
         RobotMap.liftMotorController.set(0.95 * speed);
-        RobotMap.secondLiftMotorController.set(0.95 * speed);
+        RobotMap.secondLiftMotorController.set(0.95 * speed);hhhhhhh
         SmartDashboard.putNumber("speed", speed);
     }
 
