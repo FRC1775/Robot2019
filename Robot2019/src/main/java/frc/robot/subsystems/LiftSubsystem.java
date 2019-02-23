@@ -47,6 +47,22 @@ public class LiftSubsystem extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
   
+  public void setSpeedNoEncoder(double speed){
+	double noEncoderSpeed = 0;
+
+	if (RobotMap.liftBottomLimitSwitch.get() && speed < 0) {
+		noEncoderSpeed = 0;
+	} else if (RobotMap.liftTopLimitSwitch.get() && speed > 0) {
+		noEncoderSpeed = 0;
+	}else{
+		noEncoderSpeed = speed;
+	}
+RobotMap.liftMotorController.set(noEncoderSpeed);
+SmartDashboard.putBoolean("Top Endddcode", RobotMap.liftTopLimitSwitch.get());
+SmartDashboard.putBoolean("Bottom Endddcode", RobotMap.liftBottomLimitSwitch.get() );
+
+  }
+
   public void setSpeed(double speed) {
 	//	liftToHeightPidController.disable();
 		double outputSpeed = 0;

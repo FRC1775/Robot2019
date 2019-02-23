@@ -29,36 +29,36 @@ public class RobotMap {
   public static Solenoid intakeClose;
   public static Solenoid secondSolenoidOpen;
   public static Solenoid secondSolenoidClose;
-
-  public static void init(){
-    compressor = new Compressor();
-		intakeOpen = new Solenoid(1);
-    intakeClose = new Solenoid(0);
-    
-    secondSolenoidOpen = new Solenoid(3);
-    secondSolenoidClose = new Solenoid(2);
-  }
-  // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
-  // public static int rightMotor = 2;
-
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
   public static int leftMotor = 1;
   public static int rightMotor = 0;
   public static int liftMotor = 2;
   public static int secondLiftMotor = 3;
-  public static Talon leftDrive = new Talon(leftMotor);
-  public static Talon rightDrive = new Talon(rightMotor);
-  public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
-
-  public static Talon liftMotorController = new Talon(liftMotor);
-  // public static Talon secondLiftMotorController = new Talon(secondLiftMotor);
+  public static Talon leftDrive;
+  public static DifferentialDrive drive;
+  public static Talon rightDrive;
+  public static Talon liftMotorController;
   public static Encoder liftEncoder;
   public static DigitalInput liftBottomLimitSwitch;
   public static DigitalInput liftTopLimitSwitch;
 
+  public static void init(){
+    // compressor = new Compressor();
+		// intakeOpen = new Solenoid(1);
+    // intakeClose = new Solenoid(0);
+    
+    // secondSolenoidOpen = new Solenoid(3);
+    // secondSolenoidClose = new Solenoid(2);
+  
+  leftDrive = new Talon(leftMotor);
+  rightDrive = new Talon(rightMotor);
+  drive = new DifferentialDrive(leftDrive, rightDrive);
+  liftBottomLimitSwitch = new DigitalInput(0);
+  liftTopLimitSwitch = new DigitalInput(1);
+  
+
+  liftMotorController = new Talon(liftMotor);
+  // public static Talon secondLiftMotorController = new Talon(secondLiftMotor);
+ 
+
   }
+}
