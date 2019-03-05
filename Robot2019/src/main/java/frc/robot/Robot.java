@@ -72,8 +72,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     RobotMap.init();
     m_oi = new OI();
-    liftSubsystem = new LiftSubsystem();
     m_oi.init();
+    liftSubsystem = new LiftSubsystem();
+
     // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
     // visionThread.start();
     motorSubsystem = new MotorSubsystem();

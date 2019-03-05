@@ -18,19 +18,20 @@ public class ElevatorLift extends Command{
         double leftTrigger = OI.stick.getRawAxis(2);
         double rightTrigger = OI.stick.getRawAxis(3);
         if(leftTrigger > .15){
-            speed = -leftTrigger;
+            speed = leftTrigger;
             //Robot.liftSubsystem.setSpeed(-leftTrigger);
 
         }
         if(rightTrigger > .15){
-            speed = rightTrigger;
+            speed = -rightTrigger;
             //Robot.liftSubsystem.setSpeed(rightTrigger);
 
         }
 
-        RobotMap.liftMotorController.setSpeed(0.5 * speed);
+        RobotMap.liftMotorController.set(0.7 * speed);
         // RobotMap.secondLiftMotorController.set(0.95 * speed);
         SmartDashboard.putNumber("speed", speed);
+        SmartDashboard.putNumber("motorcontroller?", RobotMap.liftMotorController.get());
     }
 
     @Override
