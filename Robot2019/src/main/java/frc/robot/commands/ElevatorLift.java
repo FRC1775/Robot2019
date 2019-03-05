@@ -28,7 +28,7 @@ public class ElevatorLift extends Command{
 
         }
 
-        Robot.liftSubsystem.setSpeedNoEncoder(0.9 * speed);
+        RobotMap.liftMotorController.setSpeed(0.5 * speed);
         // RobotMap.secondLiftMotorController.set(0.95 * speed);
         SmartDashboard.putNumber("speed", speed);
     }

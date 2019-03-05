@@ -52,8 +52,8 @@ public class RobotMap {
   leftDrive = new Talon(leftMotor);
   rightDrive = new Talon(rightMotor);
   drive = new DifferentialDrive(leftDrive, rightDrive);
-  liftBottomLimitSwitch = new DigitalInput(0);
-  liftTopLimitSwitch = new DigitalInput(1);
+  //liftBottomLimitSwitch = new DigitalInput(0);
+  // liftTopLimitSwitch = new DigitalInput(1);
   
 
   liftMotorController = new Talon(liftMotor);
