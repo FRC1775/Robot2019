@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -20,6 +21,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class RobotMap {
   public static int leftMotor = 1;
   public static int rightMotor = 0;
+  public static int pivotEncoderChannel = 0;
+
+  public static AnalogInput pivotEncoder = new AnalogInput(pivotEncoderChannel);
   public static Talon leftDrive = new Talon(leftMotor);
   public static Talon rightDrive = new Talon(rightMotor);
   public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
