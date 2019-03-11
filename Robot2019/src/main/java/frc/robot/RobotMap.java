@@ -9,6 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI;
+
+import com.kauailabs.navx.frc.AHRS;
 
 
 /**
@@ -32,6 +36,19 @@ public class RobotMap {
   public static Talon leftDrive = new Talon(leftMotor);
   public static Talon rightDrive = new Talon(rightMotor);
   public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
+  public static AHRS gyro = new AHRS(SPI.Port.i2c);
+  public static Encoder driveEncoderLeft;
+  public static Encoder driveEncoderRight; 
 
+  public static void init(){
+    double distancePerPulse = ((6*Math.PI)/250.0);
+		double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
+		
+		driveEncoderLeft = new Encoder(2, 3, false, Encoder.EncodingType.k1X);
+		driveEncoderLeft.setDistancePerPulse(distancePerPulse);
+
+		driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
+		driveEncoderRight.setDistancePerPulse(distancePerPulse);
+  }
 
 }
