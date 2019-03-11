@@ -36,7 +36,7 @@ public class Drive extends Command {
     double yVal=OI.stick.getRawAxis(1);
     double xVal=OI.stick.getRawAxis(4);
 
-    Robot.motorSubsystem.drive(yVal, xVal);
+    Robot.motorSubsystem.drive(0, 0);
      
   }
  
