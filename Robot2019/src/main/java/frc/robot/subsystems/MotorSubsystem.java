@@ -100,8 +100,8 @@ import frc.robot.commands.Drive;
 		builder.addDoubleProperty("navx/angle", () -> { return RobotMap.gyro.getAngle(); }, null);
 		builder.addBooleanProperty("resetGyro", () -> { return false; }, (value) -> {
 			if (value) {
-        rotateToAnglePidController.reset();
-        rotateToAnglePidController.enable();
+        // rotateToAnglePidController.reset();
+        // rotateToAnglePidController.enable();
 				RobotMap.gyro.reset();
 				RobotMap.gyro.zeroYaw();
 			}

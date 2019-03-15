@@ -137,7 +137,6 @@ public class Robot extends TimedRobot {
               //System.out.println("width: " + r.width);
               //System.out.println("height: " + r.height);
             }else{
-              // System.out.println("findContoursOutput is empty :(");
             }      
 
    }
