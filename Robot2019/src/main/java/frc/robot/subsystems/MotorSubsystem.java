@@ -7,7 +7,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.Drive;
@@ -15,7 +19,8 @@ import frc.robot.commands.Drive;
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
  */
-public class MotorSubsystem extends Subsystem {
+public class MotorSubsystem extends Subsystem/* implements PIDSource*/ {
+  // private PIDController rotateToAnglePidController; 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -23,6 +28,21 @@ public class MotorSubsystem extends Subsystem {
   long startTime = 0;
   double rampFactor;  
  
+  public void MotorSubsystem(){
+    
+	// 	rotateToAnglePidController = new PIDController(0.15, 0, 0.45,(PIDSource) RobotMap.gyro,
+  //   (value) ->  {
+  //     if (rotateToAnglePidController.isEnabled()) {
+  //       RobotMap.drive.arcadeDrive(0, value);
+  //     }
+  //   }, 0.02);
+
+  // rotateToAnglePidController.setInputRange(-180, 180);
+  // rotateToAnglePidController.setOutputRange(-0.75, 0.75);
+  // rotateToAnglePidController.setAbsoluteTolerance(2);
+  // rotateToAnglePidController.setContinuous();
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -47,7 +67,7 @@ public class MotorSubsystem extends Subsystem {
         System.out.println("we aren't trying to move or turn");
 
       }
-      
+
       // we're trying to turn but not move
       System.out.println("we're trying to turn but not move");
 
@@ -60,5 +80,54 @@ public class MotorSubsystem extends Subsystem {
     }
     // runs regardless of whether we want to move or turn
     RobotMap.drive.arcadeDrive(moveValue, turnValue);
-  }  
+  }
+
+  // public double getRotateAngle () {
+	// 	return rotateToAnglePidController.getSetpoint();
+  // }
+  
+  // public void setRotateAngle(double angle){
+
+	// 	RobotMap.gyro.reset();
+	// 	RobotMap.gyro.zeroYaw();
+		
+	// 	rotateToAnglePidController.setSetpoint(angle);
+	// 	rotateToAnglePidController.enable();
+  // }
+ 
+  // @Override
+	// public void initSendable(SendableBuilder builder) {
+	// 	builder.addDoubleProperty("navx/angle", () -> { return RobotMap.gyro.getAngle(); }, null);
+	// 	builder.addBooleanProperty("resetGyro", () -> { return false; }, (value) -> {
+	// 		if (value) {
+  //       // rotateToAnglePidController.reset();
+  //       // rotateToAnglePidController.enable();
+	// 			RobotMap.gyro.reset();
+	// 			RobotMap.gyro.zeroYaw();
+	// 		}
+  //   });
+  // }
+
+  // public double getDistance() {
+	// 	SmartDashboard.putNumber("LeftEncoder", RobotMap.driveEncoderLeft.getDistance());
+	// 	SmartDashboard.putNumber("RightEncoder", -RobotMap.driveEncoderRight.getDistance());
+	// 	return ((RobotMap.driveEncoderLeft.getDistance() - RobotMap.driveEncoderRight.getDistance()) / 2.0);
+  // }
+  
+  // @Override
+  // public void setPIDSourceType(PIDSourceType pidSource) {
+
+  // }
+
+	// @Override
+	// public PIDSourceType getPIDSourceType() {
+	// 	// This is for the drive train encoders
+	// 	return PIDSourceType.kDisplacement;
+	// }
+
+	// @Override
+	// public double pidGet() {
+	// 	// This is for the drive train encoders
+	// 	return getDistance();
+	// } 
 }

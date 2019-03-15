@@ -15,8 +15,8 @@ public class ElevatorLift extends Command{
     @Override
     protected void execute() {
         double speed = 0;
-        double leftTrigger = OI.stick.getRawAxis(2);
-        double rightTrigger = OI.stick.getRawAxis(3);
+        double leftTrigger = OI.getLeftTrigger();
+        double rightTrigger = OI.getRightTrigger();
         if(leftTrigger > .15){
             speed = leftTrigger;
             //Robot.liftSubsystem.setSpeed(-leftTrigger);

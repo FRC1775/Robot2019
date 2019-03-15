@@ -26,7 +26,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.MotorSubsystem;
 
@@ -39,11 +38,11 @@ import frc.robot.subsystems.MotorSubsystem;
  */
 public class Robot extends TimedRobot {
   public static LiftSubsystem liftSubsystem;
-  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
-  public static MotorSubsystem motorSubsystem;
   public static OI m_oi;
   public static UsbCamera driverCamera;
   private final Object imgLock = new Object();
+  public static MotorSubsystem motorSubsystem;
+  
   private final double RESOLUTION_WIDTH = 320;
   private final double RESOLUTION_HEIGHT = 240;
   final double TARGET_WIDTH = (2 * Math.sin(1.318)) + (5.5 * Math.sin(0.2531));
@@ -71,15 +70,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     RobotMap.init();
+
     m_oi = new OI();
-    m_oi.init();
+    OI.init();
     liftSubsystem = new LiftSubsystem();
 
     // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
     // visionThread.start();
     motorSubsystem = new MotorSubsystem();
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
    // initCamera(); 
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
