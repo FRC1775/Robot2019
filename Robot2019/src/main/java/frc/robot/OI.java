@@ -10,8 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.CloseIntake;
-import frc.robot.commands.OpenIntake;
+import frc.robot.commands.HatchOff;
+import frc.robot.commands.HatchIn;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Intake;
@@ -22,17 +22,12 @@ import frc.robot.commands.Pivot;
  */
 public class OI {
 
-    // Joystick stick = new Joystick(0);
-    // Button buttonOne = new JoystickButton(stick, 1);
-    // buttonOne.whenPressed(new OpenIntake());
-    // Button buttonTwo = new JoystickButton(stick, 2);
-    // buttonTwo.whenPressed(new CloseIntake());
-     
-
   private static final int A_BUTTON = 1;
   private static final int B_BUTTON = 2;
   private static final int X_BUTTON = 3;
   private static final int Y_BUTTON = 4;
+  private static final int LEFT_BUMPER = 5;
+  private static final int RIGHT_BUMPER = 6;
 
 
   private static Joystick driverJoystick;
@@ -41,6 +36,8 @@ public class OI {
   private static JoystickButton pivotDown;
   private static JoystickButton intakeInButton;
   private static JoystickButton intakeOutButton;
+  private static JoystickButton hatchInButton;
+  private static JoystickButton hatchOffButton; 
 
 
   private static final double PIVOT_SPEED_UP = 0.3;
@@ -56,7 +53,7 @@ public class OI {
     createPivotDownButtons(operatorJoystick);
     createIntakeIn(operatorJoystick);
     createIntakeOut(operatorJoystick);
-    
+    createHatchOff(operatorJoystick);
   }
 
   public static double getLeftJoystick(){
@@ -87,11 +84,17 @@ public class OI {
 
   public static void createIntakeIn(Joystick stick){
     intakeInButton = new JoystickButton(stick, X_BUTTON);
-    intakeInButton.whileHeld(new Intake(INTAKE_SPEED));
+    intakeInButton.whileHeld(new Intake(-INTAKE_SPEED));
   }
 
   public static void createIntakeOut(Joystick stick){
     intakeOutButton = new JoystickButton(stick, Y_BUTTON);
-    intakeOutButton.whileHeld(new Intake(-INTAKE_SPEED));
+    intakeOutButton.whileHeld(new Intake(INTAKE_SPEED));
+  }
+
+  public static void createHatchOff(Joystick stick){
+    hatchOffButton = new JoystickButton(stick, LEFT_BUMPER);
+    hatchOffButton.whileHeld(new HatchOff(true));
+    hatchOffButton.whenReleased(new HatchOff(false));
   }
 }

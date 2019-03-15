@@ -37,9 +37,9 @@ public class RobotMap {
   public static int leftMotorPWM = 1;
   public static int pivotMotorPWM = 2;
   public static int intakeMotorPWM = 4;
-
-
   public static int liftMotor = 3;
+ 
+ 
   public static Talon leftDrive;
   public static Talon rightDrive;
   public static Talon pivotMotor;
