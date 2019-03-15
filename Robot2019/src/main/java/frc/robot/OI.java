@@ -10,6 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.CloseIntake;
+import frc.robot.commands.OpenIntake;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Pivot;
@@ -18,6 +21,13 @@ import frc.robot.commands.Pivot;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+
+    // Joystick stick = new Joystick(0);
+    // Button buttonOne = new JoystickButton(stick, 1);
+    // buttonOne.whenPressed(new OpenIntake());
+    // Button buttonTwo = new JoystickButton(stick, 2);
+    // buttonTwo.whenPressed(new CloseIntake());
+     
 
   private static final int A_BUTTON = 1;
   private static final int B_BUTTON = 2;
@@ -55,6 +65,14 @@ public class OI {
 
   public static double getRightJoystick(){
     return driverJoystick.getRawAxis(4);
+  }
+
+  public static double getLeftTrigger(){
+    return operatorJoystick.getRawAxis(2);
+  }
+
+  public static double getRightTrigger(){
+    return operatorJoystick.getRawAxis(3);
   }
 
   public static void createPivotButtons(Joystick stick){

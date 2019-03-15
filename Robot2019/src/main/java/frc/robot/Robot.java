@@ -7,11 +7,26 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.core.MatOfPoint;
+
+import edu.wpi.first.cameraserver.CameraServer;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.first.vision.VisionThread;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.MotorSubsystem;
 
 /**
@@ -22,12 +37,31 @@ import frc.robot.subsystems.MotorSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static LiftSubsystem liftSubsystem;
   public static OI m_oi;
+  public static UsbCamera driverCamera;
+  private final Object imgLock = new Object();
   public static MotorSubsystem motorSubsystem;
   
+  private final double RESOLUTION_WIDTH = 320;
+  private final double RESOLUTION_HEIGHT = 240;
+  final double TARGET_WIDTH = (2 * Math.sin(1.318)) + (5.5 * Math.sin(0.2531));
+  final double TARGET_HEIGHT = (2 * Math.cos(1.318)) + (5.5 * Math.cos(0.2531));
+  private final double FISH_RESOLUTION_HEIGHT = RESOLUTION_HEIGHT * TARGET_HEIGHT; 
+  private final double FISH_RESOLUTION_WIDTH = RESOLUTION_WIDTH * TARGET_WIDTH; 
+  private final double WIDTH_FOV = .48;
+  private final double HEIGHT_FOV = .353;
+
+  private double midx = 0.0;
+  private double midy = 0.0;
+  private double fieldOfViewHeight = 0;
+  private double fieldOfViewWidth = 0;
+  private double distanceHeight = 0; 
+  private double distanceWidth = 0; 
 
   Command m_autonomousCommand; 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -39,9 +73,84 @@ public class Robot extends TimedRobot {
 
     m_oi = new OI();
     OI.init();
+    liftSubsystem = new LiftSubsystem();
 
+    // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
+    // visionThread.start();
     motorSubsystem = new MotorSubsystem();
-  }
+   // initCamera(); 
+    new Thread(() -> {
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setResolution(320, 240);
+      camera.setExposureManual(0);
+      CvSink cvSink = CameraServer.getInstance().getVideo();
+      CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 320, 240);
+      
+        Mat source = new Mat();
+        Mat output = new Mat();
+        
+        
+
+        WalkOfShamePipeline pipeline = new WalkOfShamePipeline();
+
+        while(!Thread.interrupted()) {
+            long frameTime = cvSink.grabFrame(source);
+            if(frameTime == 0){
+              continue; 
+            }
+          
+           // System.out.println("huh " + source);
+           
+            // Imgproc.cvtColor(source, output, Imgproc.CV_BLUR);
+            pipeline.process(source);
+            output = pipeline.maskOutput(); 
+            ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
+            // Always draw contours
+            if (contours.size() > 0) {
+              Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
+            }
+            outputStream.putFrame(output);
+            
+            if (pipeline.goodBoiArray().size() > 0) {
+              Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
+              synchronized (imgLock) {
+                midx = r.x + r.width / 2;
+                midy = r.y + r.height / 2;
+                // we need to be taking the smaller of the length or width in order to use this correctly
+                fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
+                distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(HEIGHT_FOV) ) );
+
+                fieldOfViewWidth = FISH_RESOLUTION_WIDTH / r.width; 
+                distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(WIDTH_FOV) ) );
+                //old angle = 0.357
+                
+              }
+              //  System.out.println("perimeter: " + perimeter);
+              //  System.out.println("area: " + area);
+              //  System.out.println("X: " + valuex);
+              //  System.out.println("Y: " + valuey);
+              /* Distance calculating height is more accurate then using width. If it
+              is changing between values then the smaller one is generally correct 
+              */
+              System.out.println( "distance height: " + distanceHeight );
+              //System.out.println ("distance width: " + distanceWidth );
+              //System.out.println("width: " + r.width);
+              //System.out.println("height: " + r.height);
+            }else{
+              System.out.println("findContoursOutput is empty :(");
+            }      
+
+   }
+  
+}).start();
+
+
+}
+//Horizontal - 61 58.8991967
+//Vertical - 34.3
+
+// look into what the bounding box actually looks like / what the width is for an angled rectangle
+
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -53,6 +162,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+   
+//we want to get the modified image onto the smart dashboard    
   }
 
   /**
@@ -131,4 +242,13 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 
+
+ /* private void initCamera() {
+    driverCamera = CameraServer.getInstance().startAutomaticCapture();
+    //driverCamera.setResolution(320, 180);
+    driverCamera.setFPS(30);
+    //driverCamera.getProperty("focus_auto").set(1);
+    driverCamera.setExposureManual(0);
+    
+  }*/
 }
