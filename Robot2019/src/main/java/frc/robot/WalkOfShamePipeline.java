@@ -136,8 +136,8 @@ public class WalkOfShamePipeline implements VisionPipeline {
 
 			if ( r.width > 10 && r.height > 10 ){
 				goodBoiArray.add(contours.get(i));
-				System.out.println("height: " + r.height);
-				System.out.println("width: " + r.width);
+				// System.out.println("height: " + r.height);
+				// System.out.println("width: " + r.width);
 			}			
 		}
 	} 

@@ -132,12 +132,12 @@ public class Robot extends TimedRobot {
               /* Distance calculating height is more accurate then using width. If it
               is changing between values then the smaller one is generally correct 
               */
-              System.out.println( "distance height: " + distanceHeight );
+              // System.out.println( "distance height: " + distanceHeight );
               //System.out.println ("distance width: " + distanceWidth );
               //System.out.println("width: " + r.width);
               //System.out.println("height: " + r.height);
             }else{
-              System.out.println("findContoursOutput is empty :(");
+              // System.out.println("findContoursOutput is empty :(");
             }      
 
    }
