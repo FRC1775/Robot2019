@@ -22,33 +22,43 @@ import com.kauailabs.navx.frc.AHRS;
  * floating around.
  */
 public class RobotMap {
-  // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
-  // public static int rightMotor = 2;
+  
+  public static int rightMotorPWM = 0;
+  public static int leftMotorPWM = 1;
+  public static int pivotMotorPWM = 2;
+  public static int intakeMotorPWM = 3;
 
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
-  public static int leftMotor = 1;
-  public static int rightMotor = 0;
-  public static Talon leftDrive = new Talon(leftMotor);
-  public static Talon rightDrive = new Talon(rightMotor);
-  public static DifferentialDrive drive = new DifferentialDrive(leftDrive, rightDrive);
-  public static AHRS gyro = new AHRS(Port.kOnboard);
+
+  public static Talon leftDrive;
+  public static Talon rightDrive;
+  public static Talon pivotMotor;
+  public static Talon intakeMotor;
+
+  public static DifferentialDrive drive;
+  public static AHRS gyro;
   public static Encoder driveEncoderLeft;
   public static Encoder driveEncoderRight; 
 
   public static void init(){
-    double distancePerPulse = ((6*Math.PI)/250.0);
-		double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
-		
-		driveEncoderLeft = new Encoder(2, 3, false, Encoder.EncodingType.k1X);
-		driveEncoderLeft.setDistancePerPulse(distancePerPulse);
 
-		driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
-		driveEncoderRight.setDistancePerPulse(distancePerPulse);
+    leftDrive = new Talon(leftMotorPWM);
+    rightDrive = new Talon(rightMotorPWM);
+
+    pivotMotor = new Talon(pivotMotorPWM);
+    intakeMotor = new Talon(intakeMotorPWM);
+
+    drive = new DifferentialDrive(leftDrive, rightDrive);
+
+    gyro = new AHRS(Port.kOnboard);
+
+    // double distancePerPulse = ((6*Math.PI)/250.0);
+		// double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
+		
+		// driveEncoderLeft = new Encoder(2, 3, false, Encoder.EncodingType.k1X);
+		// driveEncoderLeft.setDistancePerPulse(distancePerPulse);
+
+		// driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
+		// driveEncoderRight.setDistancePerPulse(distancePerPulse);
   }
 
 }

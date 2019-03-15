@@ -8,37 +8,72 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Intake;
+import frc.robot.commands.Pivot;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
 
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
-  public static Joystick stick = new Joystick(0);
-  // Button button = new JoystickButton(stick, buttonNumber);
+  private static final int A_BUTTON = 1;
+  private static final int B_BUTTON = 2;
+  private static final int X_BUTTON = 3;
+  private static final int Y_BUTTON = 4;
 
-  // There are a few additional built in buttons you can use. Additionally,
-  // by subclassing Button you can create custom triggers and bind those to
-  // commands the same as any other Button.
 
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
+  private static Joystick driverJoystick;
+  private static Joystick operatorJoystick;
+  private static JoystickButton pivotUp;
+  private static JoystickButton pivotDown;
+  private static JoystickButton intakeInButton;
+  private static JoystickButton intakeOutButton;
 
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
 
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
+  private static final double PIVOT_SPEED_UP = 0.3;
+  private static final double PIVOT_SPEED_DOWN = -0.2;
+  private static final double INTAKE_SPEED = 0.5;
 
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
+  public static void init() {
+
+    driverJoystick = new Joystick(0);
+    operatorJoystick = new Joystick(1);
+
+    createPivotButtons(operatorJoystick);
+    createPivotDownButtons(operatorJoystick);
+    createIntakeIn(operatorJoystick);
+    createIntakeOut(operatorJoystick);
+    
+  }
+
+  public static double getLeftJoystick(){
+    return driverJoystick.getRawAxis(1);
+  }
+
+  public static double getRightJoystick(){
+    return driverJoystick.getRawAxis(4);
+  }
+
+  public static void createPivotButtons(Joystick stick){
+    pivotUp = new JoystickButton(stick, A_BUTTON);
+    pivotUp.whileHeld(new Pivot(PIVOT_SPEED_UP));
+  }
+
+  public static void createPivotDownButtons(Joystick stick){
+    pivotDown = new JoystickButton(stick, B_BUTTON);
+    pivotDown.whileHeld(new Pivot(PIVOT_SPEED_DOWN));
+  }
+
+  public static void createIntakeIn(Joystick stick){
+    intakeInButton = new JoystickButton(stick, X_BUTTON);
+    intakeInButton.whileHeld(new Intake(INTAKE_SPEED));
+  }
+
+  public static void createIntakeOut(Joystick stick){
+    intakeOutButton = new JoystickButton(stick, Y_BUTTON);
+    intakeOutButton.whileHeld(new Intake(-INTAKE_SPEED));
+  }
 }
