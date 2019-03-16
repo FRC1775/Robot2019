@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.Encoder;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -29,10 +30,10 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public class RobotMap {
   public static Compressor compressor;
-  public static Solenoid intakeOpen;
-  public static Solenoid intakeClose;
-  public static Solenoid secondSolenoidOpen;
-  public static Solenoid secondSolenoidClose;
+  public static Solenoid hatchPistonLeftOut;
+  public static Solenoid hatchPistonLeftIn;
+  public static Solenoid hatchPistonRightOut;
+  public static Solenoid hatchPistonRightIn;
   public static int rightMotorPWM = 0;
   public static int leftMotorPWM = 1;
   public static int pivotMotorPWM = 2;
@@ -57,11 +58,11 @@ public class RobotMap {
   public static void init(){
 
     compressor = new Compressor();
-		intakeOpen = new Solenoid(1);
-    intakeClose = new Solenoid(0);
+		hatchPistonLeftOut = new Solenoid(2);
+    hatchPistonLeftIn = new Solenoid(3);
     
-    secondSolenoidOpen = new Solenoid(3);
-    secondSolenoidClose = new Solenoid(2);
+    hatchPistonRightOut = new Solenoid(0);
+    hatchPistonRightIn = new Solenoid(1);
     leftDrive = new Talon(leftMotorPWM);
     rightDrive = new Talon(rightMotorPWM);
 

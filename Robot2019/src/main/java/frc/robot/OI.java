@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.HatchOff;
+import frc.robot.commands.HatchOffReal;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Intake;
@@ -95,8 +96,8 @@ public class OI {
 
   public static void createHatchOff(Joystick stick){
     hatchOffButton = new JoystickButton(stick, LEFT_BUMPER);
-    hatchOffButton.whileHeld(new HatchOff(true));
-    hatchOffButton.whenReleased(new HatchOff(false));
+    hatchOffButton.whileHeld(new HatchOffReal(true));
+    hatchOffButton.whenReleased(new HatchOffReal(false));
   }
   public static void resetGyro(Joystick stick){
     resetGyroButton = new JoystickButton(stick, 6);
