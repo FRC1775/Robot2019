@@ -29,8 +29,8 @@ import frc.robot.commands.Drive;
   double rampFactor;  
  
   public void MotorSubsystem(){
-    
-		rotateToAnglePidController = new PIDController(0.15, 0, 0.45,(PIDSource) RobotMap.gyro,
+   //.15, 0, .45 
+		rotateToAnglePidController = new PIDController(0, 0, 0, (PIDSource) RobotMap.gyro,
     (value) ->  {
       if (rotateToAnglePidController.isEnabled()) {
         RobotMap.drive.arcadeDrive(0, value);
@@ -55,6 +55,9 @@ import frc.robot.commands.Drive;
     // long rampFactor; 
 
     SmartDashboard.putNumber("drive encoder distance:", RobotMap.driveEncoderRight.getDistance());
+    SmartDashboard.putNumber("pitch", RobotMap.gyro.getPitch());
+    SmartDashboard.putNumber("yaw", RobotMap.gyro.getYaw());
+    SmartDashboard.putNumber("roll", RobotMap.gyro.getRoll());
 
     // we're trying to move
     if(yVal < -0.1 || yVal > 0.1){
@@ -102,11 +105,12 @@ import frc.robot.commands.Drive;
 		builder.addDoubleProperty("navx/angle", () -> { return RobotMap.gyro.getAngle(); }, null);
 		builder.addBooleanProperty("resetGyro", () -> { return false; }, (value) -> {
 			if (value) {
-        // rotateToAnglePidController.reset();
+       // rotateToAnglePidController.reset();
         // rotateToAnglePidController.enable();
 				RobotMap.gyro.reset();
-				RobotMap.gyro.zeroYaw();
-			}
+        RobotMap.gyro.zeroYaw();
+        
+      }
     });
   }
 

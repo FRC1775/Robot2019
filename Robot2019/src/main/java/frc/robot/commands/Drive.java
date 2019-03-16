@@ -36,7 +36,7 @@ public class Drive extends Command {
     double yVal = OI.getLeftJoystick();
     double xVal = OI.getRightJoystick();
 
-    Robot.motorSubsystem.drive(0, 0);
+    Robot.motorSubsystem.drive(yVal, xVal);
      
   }
  

@@ -10,11 +10,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.HatchOff;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Pivot;
+import frc.robot.commands.ResetGyro;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -35,6 +37,7 @@ public class OI {
   private static JoystickButton intakeInButton;
   private static JoystickButton intakeOutButton;
   private static JoystickButton hatchOffButton; 
+  private static JoystickButton resetGyroButton;
 
 
   private static final double PIVOT_SPEED_UP = 0.3;
@@ -51,6 +54,7 @@ public class OI {
     createIntakeIn(operatorJoystick);
     createIntakeOut(operatorJoystick);
     createHatchOff(operatorJoystick);
+    resetGyro(operatorJoystick);
   }
 
   public static double getLeftJoystick(){
@@ -62,11 +66,11 @@ public class OI {
   }
 
   public static double getLeftTrigger(){
-    return operatorJoystick.getRawAxis(2);
+    return driverJoystick.getRawAxis(2);
   }
 
   public static double getRightTrigger(){
-    return operatorJoystick.getRawAxis(3);
+    return driverJoystick.getRawAxis(3);
   }
 
   public static void createPivotButtons(Joystick stick){
@@ -93,5 +97,10 @@ public class OI {
     hatchOffButton = new JoystickButton(stick, LEFT_BUMPER);
     hatchOffButton.whileHeld(new HatchOff(true));
     hatchOffButton.whenReleased(new HatchOff(false));
+  }
+  public static void resetGyro(Joystick stick){
+    resetGyroButton = new JoystickButton(stick, 6);
+    resetGyroButton.whenPressed(new ResetGyro());
+
   }
 }

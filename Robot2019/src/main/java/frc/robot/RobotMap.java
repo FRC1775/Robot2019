@@ -72,12 +72,13 @@ public class RobotMap {
     drive = new DifferentialDrive(leftDrive, rightDrive);
 
     gyro = new AHRS(Port.kOnboard);
+    gyro.reset();
 
     double distancePerPulse = ((6*Math.PI)/250.0);
-		double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
+		// double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
 		
-		// driveEncoderLeft = new Encoder(2, 3, false, Encoder.EncodingType.k1X);
-		// driveEncoderLeft.setDistancePerPulse(distancePerPulse);
+		driveEncoderLeft = new Encoder(6, 7, false, Encoder.EncodingType.k1X);
+		driveEncoderLeft.setDistancePerPulse(distancePerPulse);
 
 		driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
     driveEncoderRight.setDistancePerPulse(distancePerPulse);

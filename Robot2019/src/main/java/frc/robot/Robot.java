@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
   public static LiftSubsystem liftSubsystem;
   public static OI m_oi;
   public static UsbCamera driverCamera;
+  public static UsbCamera actualDriverCamera;
+
   private final Object imgLock = new Object();
   public static MotorSubsystem motorSubsystem;
   
@@ -80,71 +82,70 @@ public class Robot extends TimedRobot {
     motorSubsystem = new MotorSubsystem();
    // initCamera(); 
     new Thread(() -> {
-      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
+      UsbCamera actualDriverCamera = CameraServer.getInstance().startAutomaticCapture(1);
+      
+      
+
       camera.setResolution(320, 240);
       camera.setExposureManual(0);
       CvSink cvSink = CameraServer.getInstance().getVideo();
       CvSource outputStream = CameraServer.getInstance().putVideo("Grip Pipeline Video", 320, 240);
       
-        Mat source = new Mat();
-        Mat output = new Mat();
+      Mat source = new Mat();
+      Mat output = new Mat();
         
         
 
-        WalkOfShamePipeline pipeline = new WalkOfShamePipeline();
+      WalkOfShamePipeline pipeline = new WalkOfShamePipeline();
 
-        while(!Thread.interrupted()) {
-            long frameTime = cvSink.grabFrame(source);
-            if(frameTime == 0){
-              continue; 
-            }
-          
-           // System.out.println("huh " + source);
-           
-            // Imgproc.cvtColor(source, output, Imgproc.CV_BLUR);
-            pipeline.process(source);
-            output = pipeline.maskOutput(); 
-            ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
-            // Always draw contours
-            if (contours.size() > 0) {
-              Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
-            }
-            outputStream.putFrame(output);
+      while(!Thread.interrupted()) {
+        long frameTime = cvSink.grabFrame(source);
+        if(frameTime == 0){
+          continue; 
+        }
+        
+        // System.out.println("huh " + source);
+        
+        // Imgproc.cvtColor(source, output, Imgproc.CV_BLUR);
+        pipeline.process(source);
+        output = pipeline.maskOutput(); 
+        ArrayList<MatOfPoint> contours = pipeline.findContoursOutput();
+        // Always draw contours
+        if (contours.size() > 0) {
+          Imgproc.drawContours(output, contours, -1, new Scalar(0, 255, 0));
+        }
+        outputStream.putFrame(output);
+        
+        if (pipeline.goodBoiArray().size() > 0) {
+          Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
+          synchronized (imgLock) {
+            midx = r.x + r.width / 2;
+            midy = r.y + r.height / 2;
+            // we need to be taking the smaller of the length or width in order to use this correctly
+            fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
+            distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(HEIGHT_FOV) ) );
+
+            fieldOfViewWidth = FISH_RESOLUTION_WIDTH / r.width; 
+            distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(WIDTH_FOV) ) );
+            //old angle = 0.357
             
-            if (pipeline.goodBoiArray().size() > 0) {
-              Rect r = Imgproc.boundingRect(pipeline.goodBoiArray().get(0));
-              synchronized (imgLock) {
-                midx = r.x + r.width / 2;
-                midy = r.y + r.height / 2;
-                // we need to be taking the smaller of the length or width in order to use this correctly
-                fieldOfViewHeight = FISH_RESOLUTION_HEIGHT / r.height; 
-                distanceHeight = ( fieldOfViewHeight / ( 2 * Math.tan(HEIGHT_FOV) ) );
-
-                fieldOfViewWidth = FISH_RESOLUTION_WIDTH / r.width; 
-                distanceWidth = ( fieldOfViewWidth / ( 2 * Math.tan(WIDTH_FOV) ) );
-                //old angle = 0.357
-                
-              }
-              //  System.out.println("perimeter: " + perimeter);
-              //  System.out.println("area: " + area);
-              //  System.out.println("X: " + valuex);
-              //  System.out.println("Y: " + valuey);
-              /* Distance calculating height is more accurate then using width. If it
-              is changing between values then the smaller one is generally correct 
-              */
-              // System.out.println( "distance height: " + distanceHeight );
-              //System.out.println ("distance width: " + distanceWidth );
-              //System.out.println("width: " + r.width);
-              //System.out.println("height: " + r.height);
-            }else{
-            }      
-
-   }
-  
-}).start();
-
-
-}
+          }
+          //  System.out.println("perimeter: " + perimeter);
+          //  System.out.println("area: " + area);
+          //  System.out.println("X: " + valuex);
+          //  System.out.println("Y: " + valuey);
+          /* Distance calculating height is more accurate then using width. If it
+          is changing between values then the smaller one is generally correct 
+          */
+          // System.out.println( "distance height: " + distanceHeight );
+          //System.out.println ("distance width: " + distanceWidth );
+          //System.out.println("width: " + r.width);
+          //System.out.println("height: " + r.height);
+        }   
+      }
+    }).start();
+  }
 //Horizontal - 61 58.8991967
 //Vertical - 34.3
 
