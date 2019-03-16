@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.HatchOff;
-import frc.robot.commands.HatchIn;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Intake;
@@ -27,7 +26,6 @@ public class OI {
   private static final int X_BUTTON = 3;
   private static final int Y_BUTTON = 4;
   private static final int LEFT_BUMPER = 5;
-  private static final int RIGHT_BUMPER = 6;
 
 
   private static Joystick driverJoystick;
@@ -36,13 +34,12 @@ public class OI {
   private static JoystickButton pivotDown;
   private static JoystickButton intakeInButton;
   private static JoystickButton intakeOutButton;
-  private static JoystickButton hatchInButton;
   private static JoystickButton hatchOffButton; 
 
 
   private static final double PIVOT_SPEED_UP = 0.3;
   private static final double PIVOT_SPEED_DOWN = -0.2;
-  private static final double INTAKE_SPEED = 0.5;
+  private static final double INTAKE_SPEED = 0.8;
 
   public static void init() {
 

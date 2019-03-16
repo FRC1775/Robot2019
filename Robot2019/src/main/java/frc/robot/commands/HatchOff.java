@@ -9,6 +9,7 @@ public class HatchOff extends InstantCommand {
     public HatchOff(boolean goingOut){
         this.goingOut = goingOut; 
     }
+
     protected void execute() {
         RobotMap.intakeOpen.set(!goingOut);
         RobotMap.intakeClose.set(goingOut);

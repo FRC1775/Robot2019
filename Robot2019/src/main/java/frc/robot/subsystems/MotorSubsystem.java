@@ -54,6 +54,8 @@ import frc.robot.commands.Drive;
     double turnValue = xVal;
     // long rampFactor; 
 
+    SmartDashboard.putNumber("drive encoder distance:", RobotMap.driveEncoderRight.getDistance());
+
     // we're trying to move
     if(yVal < -0.1 || yVal > 0.1){
       turnValue = moveValue * xVal;

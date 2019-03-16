@@ -56,12 +56,12 @@ public class RobotMap {
 
   public static void init(){
 
-    // compressor = new Compressor();
-		// intakeOpen = new Solenoid(1);
-    // intakeClose = new Solenoid(0);
+    compressor = new Compressor();
+		intakeOpen = new Solenoid(1);
+    intakeClose = new Solenoid(0);
     
-    // secondSolenoidOpen = new Solenoid(3);
-    // secondSolenoidClose = new Solenoid(2);
+    secondSolenoidOpen = new Solenoid(3);
+    secondSolenoidClose = new Solenoid(2);
     leftDrive = new Talon(leftMotorPWM);
     rightDrive = new Talon(rightMotorPWM);
 
@@ -73,14 +73,14 @@ public class RobotMap {
 
     gyro = new AHRS(Port.kOnboard);
 
-    // double distancePerPulse = ((6*Math.PI)/250.0);
-		// double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
+    double distancePerPulse = ((6*Math.PI)/250.0);
+		double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
 		
 		// driveEncoderLeft = new Encoder(2, 3, false, Encoder.EncodingType.k1X);
 		// driveEncoderLeft.setDistancePerPulse(distancePerPulse);
 
-		// driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
-    // driveEncoderRight.setDistancePerPulse(distancePerPulse);
+		driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
+    driveEncoderRight.setDistancePerPulse(distancePerPulse);
     
   //liftBottomLimitSwitch = new DigitalInput(0);
   // liftTopLimitSwitch = new DigitalInput(1);
