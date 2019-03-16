@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.Talon;
@@ -40,6 +41,9 @@ public class RobotMap {
   public static int intakeMotorPWM = 4;
   public static int liftMotor = 3;
  
+  public static int pivotEncoderChannel = 0;
+
+  public static AnalogInput pivotEncoder = new AnalogInput(pivotEncoderChannel);
  
   public static Talon leftDrive;
   public static Talon rightDrive;
@@ -49,7 +53,6 @@ public class RobotMap {
   public static Encoder liftEncoder;
   public static DigitalInput liftBottomLimitSwitch;
   public static DigitalInput liftTopLimitSwitch;
-
   public static DifferentialDrive drive;
   public static AHRS gyro;
   public static Encoder driveEncoderLeft;

@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.MotorSubsystem;
+import frc.robot.subsystems.PivotEncoderSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,6 +39,7 @@ import frc.robot.subsystems.MotorSubsystem;
  */
 public class Robot extends TimedRobot {
   public static LiftSubsystem liftSubsystem;
+  public static PivotEncoderSubsystem pivotEncoderSubsystem;
   public static OI m_oi;
   public static UsbCamera driverCamera;
   public static UsbCamera actualDriverCamera;
@@ -80,6 +82,7 @@ public class Robot extends TimedRobot {
     // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
     // visionThread.start();
     motorSubsystem = new MotorSubsystem();
+    pivotEncoderSubsystem = new PivotEncoderSubsystem();
    // initCamera(); 
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -148,6 +151,7 @@ public class Robot extends TimedRobot {
   }
 //Horizontal - 61 58.8991967
 //Vertical - 34.3
+
 
 // look into what the bounding box actually looks like / what the width is for an angled rectangle
 
