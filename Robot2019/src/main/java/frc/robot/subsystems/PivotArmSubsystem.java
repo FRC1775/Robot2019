@@ -32,14 +32,14 @@ public class PivotArmSubsystem extends Subsystem {
   public void setSpeed(double speed){
         double distanceFromCenter;
         double adjustedSpeed = speed;
-    if(speed < 0 && conversion() < 45){
-        distanceFromCenter = 45 - conversion();
-        adjustedSpeed = speed/distanceFromCenter;
-    } 
-    if (speed > 0 && conversion() > 45){
-        distanceFromCenter = conversion() - 45;
-        adjustedSpeed = speed/distanceFromCenter;
-    }
+    // if(speed < 0 && conversion() < 45){
+    //     distanceFromCenter = 45 - conversion();
+    //     adjustedSpeed = speed/distanceFromCenter;
+    // } 
+    // if (speed > 0 && conversion() > 45){
+    //     distanceFromCenter = conversion() - 45;
+    //     adjustedSpeed = speed/distanceFromCenter;
+    // }
     RobotMap.pivotMotor.set(adjustedSpeed);
   }
 

@@ -9,8 +9,8 @@ public class HatchOffReal extends CommandGroup {
     public HatchOffReal(boolean goingOut){
         this.goingOut = goingOut;
 
-        addSequential(new HatchOff(goingOut, true));
-        addSequential(new WaitCommand(1));
-        addSequential(new HatchOff(goingOut, false));
+        addParallel(new HatchOff(goingOut, true));
+        // addSequential(new WaitCommand(0.1));
+        addParallel(new HatchOff(goingOut, false));
     }
 }
