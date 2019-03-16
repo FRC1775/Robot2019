@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.MotorSubsystem;
+import frc.robot.subsystems.PivotArmSubsystem;
 import frc.robot.subsystems.PivotEncoderSubsystem;
 
 /**
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   public static UsbCamera driverCamera;
   public static UsbCamera actualDriverCamera;
+  public static PivotArmSubsystem pivotArmSubsystem;
 
   private final Object imgLock = new Object();
   public static MotorSubsystem motorSubsystem;
@@ -62,6 +64,8 @@ public class Robot extends TimedRobot {
   private double fieldOfViewWidth = 0;
   private double distanceHeight = 0; 
   private double distanceWidth = 0; 
+  public double initAngle = 0;
+  public static double initVoltage = 0;
 
   Command m_autonomousCommand; 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -83,6 +87,8 @@ public class Robot extends TimedRobot {
     // visionThread.start();
     motorSubsystem = new MotorSubsystem();
     pivotEncoderSubsystem = new PivotEncoderSubsystem();
+    pivotArmSubsystem = new PivotArmSubsystem();
+    initVoltage = RobotMap.pivotEncoder.getVoltage();
    // initCamera(); 
     new Thread(() -> {
       UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -148,6 +154,10 @@ public class Robot extends TimedRobot {
         }   
       }
     }).start();
+  }
+
+  public static double initVolts(){
+    return initVoltage;
   }
 //Horizontal - 61 58.8991967
 //Vertical - 34.3

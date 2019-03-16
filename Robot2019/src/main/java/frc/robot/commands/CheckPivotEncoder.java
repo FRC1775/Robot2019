@@ -22,6 +22,7 @@ public class CheckPivotEncoder extends Command {
   public final static double CONVERSION_FACTOR = 360 / ENCODER_RANGE; 
   public static double init_volts = 0;
   public static double init_angle = 0;
+  public static double angle = 0;
   public CheckPivotEncoder() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.pivotEncoderSubsystem);
@@ -44,12 +45,14 @@ public class CheckPivotEncoder extends Command {
     if (volts < 0){
       volts += ENCODER_RANGE;
     }
-    double angle = volts * CONVERSION_FACTOR;
+    angle = volts * CONVERSION_FACTOR;
     SmartDashboard.putNumber("encoder voltage", volts);
     SmartDashboard.putNumber("angle of pivot", angle);
     SmartDashboard.putNumber("initial voltage", init_volts);
   }
- 
+  public static double getAngle(){
+    return angle;
+  }
   @Override
   protected boolean isFinished() {
     return false;
