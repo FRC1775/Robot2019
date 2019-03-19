@@ -43,8 +43,6 @@ public class RobotMap {
  
   public static int pivotEncoderChannel = 0;
 
-  public static AnalogInput pivotEncoder = new AnalogInput(pivotEncoderChannel);
- 
   public static Talon leftDrive;
   public static Talon rightDrive;
   public static Talon pivotMotor;
@@ -57,6 +55,7 @@ public class RobotMap {
   public static AHRS gyro;
   public static Encoder driveEncoderLeft;
   public static Encoder driveEncoderRight; 
+  public static AnalogInput pivotEncoder;
 
   public static void init(){
 
@@ -86,14 +85,11 @@ public class RobotMap {
 
 		driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
     driveEncoderRight.setDistancePerPulse(distancePerPulse);
+
+    pivotEncoder = new AnalogInput(pivotEncoderChannel);
     
-  //liftBottomLimitSwitch = new DigitalInput(0);
-  // liftTopLimitSwitch = new DigitalInput(1);
-  
-
-  
-  // public static Talon secondLiftMotorController = new Talon(secondLiftMotor);
+    liftBottomLimitSwitch = new DigitalInput(1);
+    liftTopLimitSwitch = new DigitalInput(0);
  
-
   }
 }

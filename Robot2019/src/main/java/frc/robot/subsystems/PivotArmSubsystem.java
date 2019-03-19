@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.CheckPivotEncoder;
 import frc.robot.commands.DoNothing;
 import frc.robot.commands.Pivot;
 
@@ -30,20 +29,20 @@ public class PivotArmSubsystem extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
   public void setSpeed(double speed){
-        double distanceFromCenter;
-        double adjustedSpeed = speed;
-    // if(speed < 0 && conversion() < 45){
-    //     distanceFromCenter = 45 - conversion();
-    //     adjustedSpeed = speed/distanceFromCenter;
-    // } 
-    // if (speed > 0 && conversion() > 45){
-    //     distanceFromCenter = conversion() - 45;
-    //     adjustedSpeed = speed/distanceFromCenter;
-    // }
-    RobotMap.pivotMotor.set(adjustedSpeed);
+        // if (RobotMap.liftBottomLimitSwitch.get()){
+        //     speed = 0;
+        // }
+        // if (getAngle() <= 270 && getAngle() >= 180 && speed<0 ){
+        //     speed = 0;
+        // }
+        // if ((getAngle() <= 10 || getAngle() >= 350) && speed>0){
+        //     speed = 0; 
+        // }
+        RobotMap.pivotMotor.set(speed);
+        
   }
 
-    public double conversion(){
+    public double getAngle(){
         double volts = RobotMap.pivotEncoder.getVoltage() - Robot.initVolts();
         if (volts < 0){
             volts += ENCODER_RANGE;

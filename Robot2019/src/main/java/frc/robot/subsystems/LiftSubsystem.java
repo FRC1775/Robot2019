@@ -50,11 +50,12 @@ public class LiftSubsystem extends Subsystem {
   public void setSpeedNoEncoder(double speed){
 	double noEncoderSpeed = 0;
 
-	if (RobotMap.liftBottomLimitSwitch.get() && speed < 0) {
+	if (!RobotMap.liftBottomLimitSwitch.get() && speed < 0) {
 		noEncoderSpeed = 0;
-	} else if (RobotMap.liftTopLimitSwitch.get() && speed > 0) {
+	} else if (!RobotMap.liftTopLimitSwitch.get() && speed > 0) {
 		noEncoderSpeed = 0;
 	}else{
+		
 		noEncoderSpeed = speed;
 	}
 RobotMap.liftMotorController.set(noEncoderSpeed);

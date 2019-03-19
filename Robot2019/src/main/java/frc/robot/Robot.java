@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.MotorSubsystem;
 import frc.robot.subsystems.PivotArmSubsystem;
-import frc.robot.subsystems.PivotEncoderSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,7 +39,6 @@ import frc.robot.subsystems.PivotEncoderSubsystem;
  */
 public class Robot extends TimedRobot {
   public static LiftSubsystem liftSubsystem;
-  public static PivotEncoderSubsystem pivotEncoderSubsystem;
   public static OI m_oi;
   public static UsbCamera driverCamera;
   public static UsbCamera actualDriverCamera;
@@ -86,13 +84,12 @@ public class Robot extends TimedRobot {
     // visionThread = new VisionThread(driverCamera, new WalkOfShamePipeline(), this::testFunction);
     // visionThread.start();
     motorSubsystem = new MotorSubsystem();
-    pivotEncoderSubsystem = new PivotEncoderSubsystem();
     pivotArmSubsystem = new PivotArmSubsystem();
     initVoltage = RobotMap.pivotEncoder.getVoltage();
    // initCamera(); 
     new Thread(() -> {
-      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-      UsbCamera actualDriverCamera = CameraServer.getInstance().startAutomaticCapture(1);
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(1);
+      UsbCamera actualDriverCamera = CameraServer.getInstance().startAutomaticCapture(0);
       
       
 

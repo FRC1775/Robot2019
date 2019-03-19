@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.subsystems.LiftSubsystem;
 
 public class ElevatorLift extends Command{
     public ElevatorLift(){
@@ -28,7 +29,7 @@ public class ElevatorLift extends Command{
 
         }
 
-        RobotMap.liftMotorController.set(speed);
+        Robot.liftSubsystem.setSpeedNoEncoder(speed);
         // RobotMap.secondLiftMotorController.set(0.95 * speed);
         SmartDashboard.putNumber("speed", speed);
         SmartDashboard.putNumber("motorcontroller?", RobotMap.liftMotorController.get());
