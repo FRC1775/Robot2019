@@ -43,7 +43,7 @@ public class OI {
   private static JoystickButton turnIncrement;
 
 
-  private static final double PIVOT_SPEED_UP = 0.5;
+  private static final double PIVOT_SPEED_UP = 0.3;
   private static final double PIVOT_SPEED_DOWN = -0.2;
   private static final double INTAKE_SPEED = 0.8;
 

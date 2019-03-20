@@ -61,7 +61,7 @@ import frc.robot.commands.TurnIncrement;
       // System.out.println("we're trying to turn but not move");
 
       rampFactor = Math.min(1, (System.currentTimeMillis() - startTime) / RAMP_TIME);
-      turnValue = rampFactor * xVal * 0.8;
+      turnValue = rampFactor * xVal * 0.8;;
       moveValue = 0;
       SmartDashboard.putNumber("Current Time", System.currentTimeMillis());
       SmartDashboard.putNumber("Start Time", startTime);
@@ -69,7 +69,8 @@ import frc.robot.commands.TurnIncrement;
     }
     // runs regardless of whether we want to move or turn
     if(TurnIncrement.scaleTurning == true){
-      RobotMap.drive.arcadeDrive(moveValue, turnValue * 0.6);
+      RobotMap.drive.arcadeDrive(moveValue, turnValue * 0.6
+      );
     } else {
     RobotMap.drive.arcadeDrive(moveValue, turnValue);
     }
