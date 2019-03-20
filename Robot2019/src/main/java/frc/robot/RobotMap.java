@@ -77,14 +77,16 @@ public class RobotMap {
     gyro = new AHRS(Port.kOnboard);
     gyro.reset();
 
-    double distancePerPulse = ((6*Math.PI)/250.0);
+    double distancePerPulse = ((2*Math.PI)/1000);
+    // PPR = pulses per revolution
 		// double liftDistancePerPulse = (((1.375*Math.PI)/250.0) * 2);
 		
-		driveEncoderLeft = new Encoder(6, 7, false, Encoder.EncodingType.k1X);
-		driveEncoderLeft.setDistancePerPulse(distancePerPulse);
+		liftEncoder = new Encoder(6, 7, false, Encoder.EncodingType.k4X);
+    liftEncoder.setDistancePerPulse(distancePerPulse);
 
 		driveEncoderRight = new Encoder(4, 5, false, Encoder.EncodingType.k1X);
     driveEncoderRight.setDistancePerPulse(distancePerPulse);
+
 
     pivotEncoder = new AnalogInput(pivotEncoderChannel);
     

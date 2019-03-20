@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.Drive;
+import frc.robot.commands.TurnIncrement;
 
 /**
  * An example subsystem.  You can replace me with your own Subsystem.
@@ -41,10 +42,6 @@ import frc.robot.commands.Drive;
     double turnValue = xVal;
     // long rampFactor; 
 
-    SmartDashboard.putNumber("drive encoder distance:", RobotMap.driveEncoderRight.getDistance());
-    SmartDashboard.putNumber("pitch", RobotMap.gyro.getPitch());
-    SmartDashboard.putNumber("yaw", RobotMap.gyro.getYaw());
-    SmartDashboard.putNumber("roll", RobotMap.gyro.getRoll());
 
     // we're trying to move
     if(yVal < -0.1 || yVal > 0.1){
@@ -71,7 +68,11 @@ import frc.robot.commands.Drive;
       SmartDashboard.putNumber("Ramp Factor", (double) rampFactor);
     }
     // runs regardless of whether we want to move or turn
+    if(TurnIncrement.scaleTurning == true){
+      RobotMap.drive.arcadeDrive(moveValue, turnValue * 0.6);
+    } else {
     RobotMap.drive.arcadeDrive(moveValue, turnValue);
+    }
   }
 
   public double getDistance() {

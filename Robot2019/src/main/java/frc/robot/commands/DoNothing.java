@@ -18,24 +18,31 @@ import frc.robot.OI;
  * The left joystick controls our forward/backward movement, and the right joystick controls turning. 
  */
 public class DoNothing extends Command {
+  public double angle;
+
+  public final static double ENCODER_RANGE = 4.972;
+  public final static double CONVERSION_FACTOR = 360 / ENCODER_RANGE; 
+  public final static double initVoltage = RobotMap.pivotEncoder.getVoltage();
+
 
   public DoNothing() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.pivotArmSubsystem);
   }
 
+
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-
+    
   }
+  
+  
  
   @Override
   protected boolean isFinished() {

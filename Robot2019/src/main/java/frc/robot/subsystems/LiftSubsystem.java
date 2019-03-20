@@ -19,7 +19,7 @@ import frc.robot.commands.ElevatorLift;
 public class LiftSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public static final double UP_MIN_SPEED = 0.55;
+ 	 public static final double UP_MIN_SPEED = 0.55;
 	public static final double DOWN_MIN_SPEED = 0.25;
 	//public static final double DOWN_MAX_SPEED = 0.4;
 	//public static final double UP_MAX_SPEED = 0.75;
@@ -28,16 +28,19 @@ public class LiftSubsystem extends Subsystem {
 	
 	private static final double MIN_HEIGHT_START_RAMP = 30.0;
 	private static final double MAX_HEIGHT_START_RAMP = 70.0;
-  private static final double MAX_HEIGHT = 84.0;
-  private static final double MIN_HEIGHT = 0;
+  	private static final double MAX_HEIGHT = 84.0;
+ 	private static final double MIN_HEIGHT = 0;
 	
 	private static final double TARGET_TOLERANCE = 2;
 	private static final double ON_TARGET_MIN_TIME = 500;
 	
 	private static final double START_RAMP_TIME_MS = 500.0;
   
-  private double startTime = System.currentTimeMillis();
-  private boolean hasSeenBottomLimitSwitch;
+ 	private double startTime = System.currentTimeMillis();
+	private boolean hasSeenBottomLimitSwitch;
+	 
+	private static final double BAD_HEIGHT_MAX = -2;
+	private static final double BAD_HEIGHT_MIN = -1;
 
 
   @Override
@@ -48,31 +51,28 @@ public class LiftSubsystem extends Subsystem {
   }
   
   public void setSpeedNoEncoder(double speed){
-	double noEncoderSpeed = 0;
+	double noEncoderSpeed = speed;
 
 	if (!RobotMap.liftBottomLimitSwitch.get() && speed < 0) {
 		noEncoderSpeed = 0;
-	} else if (!RobotMap.liftTopLimitSwitch.get() && speed > 0) {
+	} 
+	if (RobotMap.liftEncoder.getDistance() >= BAD_HEIGHT_MIN && RobotMap.liftEncoder.getDistance()
+	<= BAD_HEIGHT_MAX && (Robot.pivotArmSubsystem.getAngle() <= 10 || Robot.pivotArmSubsystem.getAngle() >= 350)){
 		noEncoderSpeed = 0;
-	}else{
-		
-		noEncoderSpeed = speed;
 	}
-RobotMap.liftMotorController.set(noEncoderSpeed);
-SmartDashboard.putBoolean("Top Endddcode", RobotMap.liftTopLimitSwitch.get());
-SmartDashboard.putBoolean("Bottom Endddcode", RobotMap.liftBottomLimitSwitch.get() );
+	RobotMap.liftMotorController.set(noEncoderSpeed);
+	SmartDashboard.putNumber("encoder height", RobotMap.liftEncoder.getDistance());
+	SmartDashboard.putBoolean("Top Endddcode", RobotMap.liftTopLimitSwitch.get());
+	SmartDashboard.putBoolean("Bottom Endddcode", RobotMap.liftBottomLimitSwitch.get() );
 
   }
 
   public void setSpeed(double speed) {
-	//	liftToHeightPidController.disable();
 		double outputSpeed = 0;
 
 		if (isAllowedToGoUp(speed) || isAllowedToGoDown(speed)) {
-			//unbrake();
 			outputSpeed = getAdjustedSpeed(speed);
 		} else {
-			//brake();
 			outputSpeed = 0;
 			startTime = System.currentTimeMillis();
 		}
@@ -87,15 +87,14 @@ SmartDashboard.putBoolean("Bottom Endddcode", RobotMap.liftBottomLimitSwitch.get
   }
   
   private boolean isAllowedToGoUp(double inputLiftSpeed) {
-		return inputLiftSpeed >= UP_MIN_SPEED && !Robot.liftSubsystem.checkTopLimitSwitch();
+		return inputLiftSpeed >= UP_MIN_SPEED && RobotMap.liftEncoder.getDistance() <= MAX_HEIGHT;
 	}
 	
 	private boolean isAllowedToGoDown(double inputLiftSpeed) {
 		if(hasSeenBottomLimitSwitch) {
-			return inputLiftSpeed <= -DOWN_MIN_SPEED && !Robot.liftSubsystem.checkBottomLimitSwitch() && 
-					RobotMap.liftEncoder.getDistance() > MIN_HEIGHT;
+			return inputLiftSpeed <= -DOWN_MIN_SPEED && RobotMap.liftEncoder.getDistance() > MIN_HEIGHT;
 		}
-		return inputLiftSpeed <= -DOWN_MIN_SPEED && !Robot.liftSubsystem.checkBottomLimitSwitch();
+		return inputLiftSpeed <= -DOWN_MIN_SPEED;
   }
   
   private double getAdjustedSpeed(double inputLiftSpeed) {

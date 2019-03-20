@@ -28,30 +28,31 @@ public class PivotArmSubsystem extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+  public double getAngle(){
+    double volts = RobotMap.pivotEncoder.getVoltage() - DoNothing.initVoltage;
+    if (volts < 0){
+        volts += ENCODER_RANGE;
+    }
+    double angle = volts * CONVERSION_FACTOR;
+
+    SmartDashboard.putNumber("encoder voltage", volts);
+    SmartDashboard.putNumber("angle of pivot", angle);
+    SmartDashboard.putNumber("initial voltage", DoNothing.initVoltage);
+    return angle;
+  }
+     
   public void setSpeed(double speed){
-        // if (RobotMap.liftBottomLimitSwitch.get()){
-        //     speed = 0;
-        // }
-        // if (getAngle() <= 270 && getAngle() >= 180 && speed<0 ){
-        //     speed = 0;
-        // }
-        // if ((getAngle() <= 10 || getAngle() >= 350) && speed>0){
-        //     speed = 0; 
-        // }
-        RobotMap.pivotMotor.set(speed);
-        
+    /*
+    if (getAngle() <= 270 && getAngle() >= 180 && speed<0 ){
+        speed = 0;
+    }
+    if ((getAngle() <= 10 || getAngle() >= 350) && speed>0){
+        speed = 0; 
+    }*/
+    if(!RobotMap.liftTopLimitSwitch.get() || !RobotMap.liftBottomLimitSwitch.get()){
+        speed = 0;
+    }
+    RobotMap.pivotMotor.set(speed);
   }
 
-    public double getAngle(){
-        double volts = RobotMap.pivotEncoder.getVoltage() - Robot.initVolts();
-        if (volts < 0){
-            volts += ENCODER_RANGE;
-        }
-        double angle = volts * CONVERSION_FACTOR;
-
-        SmartDashboard.putNumber("encoder voltage", volts);
-        SmartDashboard.putNumber("angle of pivot", angle);
-        SmartDashboard.putNumber("initial voltage", Robot.initVolts());   
-        return angle; 
-    }
 }

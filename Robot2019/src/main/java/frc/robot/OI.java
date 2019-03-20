@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Pivot;
 import frc.robot.commands.ResetGyro;
+import frc.robot.commands.TurnIncrement;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -39,6 +40,7 @@ public class OI {
   private static JoystickButton intakeOutButton;
   private static JoystickButton hatchOffButton; 
   private static JoystickButton resetGyroButton;
+  private static JoystickButton turnIncrement;
 
 
   private static final double PIVOT_SPEED_UP = 0.5;
@@ -56,6 +58,7 @@ public class OI {
     createIntakeOut(operatorJoystick);
     createHatchOff(operatorJoystick);
     resetGyro(operatorJoystick);
+    turnIncrement(driverJoystick);
   }
 
   public static double getLeftJoystick(){
@@ -102,6 +105,11 @@ public class OI {
   public static void resetGyro(Joystick stick){
     resetGyroButton = new JoystickButton(stick, 6);
     resetGyroButton.whenPressed(new ResetGyro());
+
+  }
+  public static void turnIncrement(Joystick stick){
+    turnIncrement = new JoystickButton(stick, LEFT_BUMPER);
+    turnIncrement.whileHeld(new TurnIncrement());
 
   }
 }

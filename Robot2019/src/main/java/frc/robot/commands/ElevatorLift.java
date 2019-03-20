@@ -19,12 +19,12 @@ public class ElevatorLift extends Command{
         double leftTrigger = OI.getLeftTrigger();
         double rightTrigger = OI.getRightTrigger();
         if(leftTrigger > .15){
-            speed = leftTrigger;
+            speed = -leftTrigger;
             //Robot.liftSubsystem.setSpeed(-leftTrigger);
 
         }
         if(rightTrigger > .15){
-            speed = -rightTrigger;
+            speed = rightTrigger;
             //Robot.liftSubsystem.setSpeed(rightTrigger);
 
         }
